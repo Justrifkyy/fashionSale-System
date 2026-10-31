@@ -7,6 +7,15 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  images: {
+    // Development-only dummy photos (spec open_decisions D-14). Replace with Cloudinary/UploadThing later.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {

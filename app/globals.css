@@ -1,26 +1,608 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand & semantic color tokens (DESIGN.md Section 3 & 8) */
+  --color-ink: #2D2D56;
+  --color-brick: #B8523C;
+  --color-brick-deep: #9A3F2B;
+  --color-gold: #F0B429;
+  --color-page: #F3F3F8;
+  --color-surface: #FFFFFF;
+  --color-line-soft: #E4E4EE;
+  --color-muted: #5B5B7B;
+  --color-success: #1F7A4D;
+  --color-danger: #B3261E;
+  --color-warning: #8A5A00;
+  --color-info: #245AA8;
+  --color-photo: #E9E9F1;
+
+  /* Typography tokens (DESIGN.md Section 4 & 13) */
+  --font-display: var(--font-archivo), "Arial Black", Arial, sans-serif;
+  --font-body: var(--font-instrument), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Hard shadows for pressable elements only (DESIGN.md Section 5) */
+  --shadow-hard: 4px 4px 0 0 var(--color-ink);
+  --shadow-hard-sm: 2px 2px 0 0 var(--color-ink);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Structural hierarchy & chamfer tokens */
+  --border-strong: 3px;
+  --border-base: 2px;
+  --cut: 20px;
+
+  /* shadcn/ui variable mapping (DESIGN.md Section 13) */
+  --background: var(--color-page);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-brick);
+  --primary-foreground: var(--color-surface);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-ink);
+  --accent: var(--color-gold);
+  --accent-foreground: var(--color-ink);
+  --muted: var(--color-line-soft);
+  --muted-foreground: var(--color-muted);
+  --destructive: var(--color-danger);
+  --destructive-foreground: var(--color-surface);
+  --border: var(--color-ink);
+  --input: var(--color-ink);
+  --ring: var(--color-ink);
+  --radius: 0px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (max-width: 639px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --border-strong: 2px;
+    --border-base: 1.5px;
   }
 }
 
+@media (min-width: 640px) {
+  :root {
+    --cut: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cut: 32px;
+    --border-strong: 3px;
+  }
+}
+
+html {
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  overflow-x: clip;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: clip;
+}
+
+/* Square-ended Lucide icons matching geometric block system (DESIGN.md Section 8) */
+svg.lucide {
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+/* Accessible visible keyboard focus ring (DESIGN.md Section 12) */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 5px var(--color-ink);
+}
+
+.on-ink:focus-visible,
+.on-ink :focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-ink), 0 0 0 5px var(--color-gold);
+}
+
+/* Typography scale (DESIGN.md Section 4) */
+.type-display {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  font-size: clamp(3.5rem, 8.5vw, 8rem);
+}
+
+.type-h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 118%;
+  font-variation-settings: "wdth" 118;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+}
+
+.type-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.type-h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.2;
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+}
+
+.type-h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  line-height: 1.3;
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+}
+
+.type-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.55;
+  font-size: 1rem;
+}
+
+.type-small {
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+/* Reserved ONLY for product stickers and legal footer notices */
+.type-micro {
+  font-family: var(--font-body);
+  font-weight: 600;
+  line-height: 1.4;
+  font-size: 0.8125rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 120%;
+  font-variation-settings: "wdth" 120;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Hierarchy border utilities (3px strong -> 2px mobile, 2px base -> 1.5px mobile) */
+.border-strong {
+  border-style: solid;
+  border-width: var(--border-strong);
+  border-color: var(--color-ink);
+}
+.border-t-strong {
+  border-top-style: solid;
+  border-top-width: var(--border-strong);
+  border-top-color: var(--color-ink);
+}
+.border-b-strong {
+  border-bottom-style: solid;
+  border-bottom-width: var(--border-strong);
+  border-bottom-color: var(--color-ink);
+}
+.border-l-strong {
+  border-left-style: solid;
+  border-left-width: var(--border-strong);
+  border-left-color: var(--color-ink);
+}
+.border-r-strong {
+  border-right-style: solid;
+  border-right-width: var(--border-strong);
+  border-right-color: var(--color-ink);
+}
+
+.border-base {
+  border-style: solid;
+  border-width: var(--border-base);
+  border-color: var(--color-ink);
+}
+.border-t-base {
+  border-top-style: solid;
+  border-top-width: var(--border-base);
+  border-top-color: var(--color-ink);
+}
+.border-b-base {
+  border-bottom-style: solid;
+  border-bottom-width: var(--border-base);
+  border-bottom-color: var(--color-ink);
+}
+.border-l-base {
+  border-left-style: solid;
+  border-left-width: var(--border-base);
+  border-left-color: var(--color-ink);
+}
+.border-r-base {
+  border-right-style: solid;
+  border-right-width: var(--border-base);
+  border-right-color: var(--color-ink);
+}
+
+/* Shared-border lattice grid (DESIGN.md Section 6) */
+.lattice-grid {
+  border-top: var(--border-base) solid var(--color-ink);
+  border-left: var(--border-base) solid var(--color-ink);
+}
+
+.lattice-cell {
+  border-right: var(--border-base) solid var(--color-ink);
+  border-bottom: var(--border-base) solid var(--color-ink);
+  background-color: var(--color-surface);
+}
+
+/* Two-layer 45-degree chamfered corner with border (DESIGN.md Section 5 & 13) */
+.cut-frame {
+  --b: var(--border-strong);
+  background-color: var(--color-ink);
+  padding: var(--b);
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
+}
+
+.cut-frame > .cut-inner {
+  --c-in: calc(var(--cut) - var(--b) * 0.586);
+  background-color: var(--color-surface);
+  clip-path: polygon(0 0, calc(100% - var(--c-in)) 0, 100% var(--c-in), 100% 100%, 0 100%);
+}
+
+.cut-frame > .cut-inner-ink {
+  --c-in: calc(var(--cut) - var(--b) * 0.586);
+  background-color: var(--color-ink);
+  color: var(--color-surface);
+  clip-path: polygon(0 0, calc(100% - var(--c-in)) 0, 100% var(--c-in), 100% 100%, 0 100%);
+}
+
+.cut-frame > .cut-inner-photo {
+  --c-in: calc(var(--cut) - var(--b) * 0.586);
+  background-color: var(--color-photo);
+  clip-path: polygon(0 0, calc(100% - var(--c-in)) 0, 100% var(--c-in), 100% 100%, 0 100%);
+}
+
+/* Wishlist folded corner / dog-ear (DESIGN.md Section 5 & 13) */
+.dog-ear-cut {
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+}
+
+.dog-ear-flap {
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-brick-deep);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  transform-origin: top right;
+  transition: transform 160ms ease-out;
+}
+
+/* South Sulawesi silk sarong 24px woven check motif (SVG tile, zero gradients).
+   Restricted strictly to: 1) sold-out overlay, 2) 24px footer band, 3) 404/empty states, 4) payment success band. */
+.woven-motif {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect width='12' height='12' x='0' y='0' fill='%232D2D56' fill-opacity='0.12'/%3E%3Crect width='12' height='12' x='12' y='12' fill='%232D2D56' fill-opacity='0.12'/%3E%3Crect width='12' height='2' x='0' y='10' fill='%232D2D56' fill-opacity='0.08'/%3E%3Crect width='2' height='12' x='10' y='0' fill='%232D2D56' fill-opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 24px 24px;
+}
+
+.woven-band-footer {
+  height: 24px;
+  background-color: var(--color-brick);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect width='12' height='12' x='0' y='0' fill='%232D2D56' fill-opacity='0.45'/%3E%3Crect width='12' height='12' x='12' y='12' fill='%232D2D56' fill-opacity='0.45'/%3E%3Crect width='24' height='2' x='0' y='11' fill='%23F0B429' fill-opacity='0.45'/%3E%3C/svg%3E");
+  background-size: 24px 24px;
+}
+
+/* Flat skeleton pulse without gradient shimmer (DESIGN.md Section 9) */
+@keyframes care-skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.skeleton-flat {
+  background-color: var(--color-line-soft);
+  animation: care-skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+/* Diagonal slash for out-of-stock size chip (SVG line, no CSS gradient) */
+.chip-diagonal-slash {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 48 48'%3E%3Cline x1='2' y1='46' x2='46' y2='2' stroke='%235B5B7B' stroke-width='2'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+
+/* Orchestrated 900ms logo assembly on first home load per session (DESIGN.md Section 7) */
+@keyframes logo-block-left {
+  0% {
+    transform: translate(-14px, -10px);
+    opacity: 0;
+  }
+  65% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes logo-block-right {
+  0% {
+    transform: translate(14px, 10px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  85% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes logo-fold-lock {
+  0%, 60% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.logo-assemble .logo-c-left {
+  animation: logo-block-left 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.logo-assemble .logo-c-right {
+  animation: logo-block-right 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.logo-assemble .logo-c-fold {
+  transform-origin: center;
+  animation: logo-fold-lock 900ms ease-out forwards;
+}
+
+/* Pressable button motion (DESIGN.md Section 5 & 7: 80ms hover/press) */
+.pressable-hard {
+  box-shadow: var(--shadow-hard);
+  transition: transform 80ms ease-out, box-shadow 80ms ease-out, background-color 80ms ease-out;
+}
+
+.pressable-hard:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+.pressable-hard:active:not(:disabled) {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Marquee Ticker Animations (Police Tape & Announcement Ribbons) */
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes ticker-reverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+.animate-ticker-fast {
+  display: flex;
+  width: max-content;
+  animation: ticker 16s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker-slow {
+  display: flex;
+  width: max-content;
+  animation: ticker 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker-reverse {
+  display: flex;
+  width: max-content;
+  animation: ticker-reverse 28s linear infinite;
+  will-change: transform;
+}
+
+/* Police Line & Caution Hazard Stripes (DESIGN.md Neo-Brutalist Tape) */
+.hazard-tape {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #F0B429,
+    #F0B429 14px,
+    #2D2D56 14px,
+    #2D2D56 28px
+  );
+}
+
+.hazard-tape-brick {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #B8523C,
+    #B8523C 14px,
+    #2D2D56 14px,
+    #2D2D56 28px
+  );
+}
+
+.hazard-tape-sm {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #F0B429,
+    #F0B429 8px,
+    #2D2D56 8px,
+    #2D2D56 16px
+  );
+}
+
+/* Giant Layered Typography Stroke & Brand Palette Gradient */
+.text-stroke-ink {
+  -webkit-text-stroke: 2px var(--color-ink);
+  color: transparent;
+}
+
+.text-stroke-ink-thick {
+  -webkit-text-stroke: 3px var(--color-ink);
+  color: transparent;
+}
+
+.text-stroke-faint {
+  -webkit-text-stroke: 2px rgba(45, 45, 86, 0.22);
+  color: transparent;
+}
+
+/* Palette Red (Merah Bata #B8523C) to Blue (Biru Tinta #2D2D56) Gradient Text */
+.text-gradient-care {
+  background: linear-gradient(
+    115deg,
+    var(--color-brick) 0%,
+    var(--color-brick-deep) 36%,
+    var(--color-ink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-care-soft {
+  background: linear-gradient(
+    115deg,
+    rgba(184, 82, 60, 0.35) 0%,
+    rgba(154, 63, 43, 0.32) 36%,
+    rgba(45, 45, 86, 0.35) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Studio Shutter Flash & Model Pop Animations (Avant-Garde Look Switcher) */
+@keyframes model-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.93) translateY(14px);
+    filter: brightness(1.25) contrast(1.15);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-3px);
+    filter: brightness(1.05) contrast(1.02);
+  }
+  75% {
+    transform: scale(0.99) translateY(1px);
+    filter: brightness(1) contrast(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: brightness(1) contrast(1);
+  }
+}
+
+.animate-model-pop {
+  animation: model-pop 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes shutter-flash {
+  0% {
+    opacity: 0.85;
+  }
+  40% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-shutter-flash {
+  animation: shutter-flash 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes stamp-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) translateY(-12px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.06) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-stamp-pop {
+  animation: stamp-pop 360ms cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+/* Rotating Vintage Seal / Heritage Stamp */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

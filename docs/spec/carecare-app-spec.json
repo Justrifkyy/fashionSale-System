@@ -1,0 +1,2416 @@
+{
+  "meta": {
+    "document": "Care Care - Application Specification",
+    "version": "1.2.0",
+    "last_updated": "2026-10-28",
+    "purpose": "Single source of truth so the developer and any AI coding assistant build exactly the same application. If code and this file disagree, ask the owner before deciding.",
+    "language_policy": {
+      "spec_language": "English (keys and descriptions)",
+      "ui_language": "Indonesian (id-ID). All user-facing copy is Indonesian. Keep all UI strings in one i18n file (messages/id.json) so English can be added later.",
+      "code_language": "English identifiers, TypeScript"
+    },
+    "how_ai_should_use_this_file": [
+      "Read the whole file before generating code for any feature.",
+      "Implement only what is marked for the current phase (see roadmap). Do not build later-phase features unless asked.",
+      "Anything listed in open_decisions is NOT decided. Do not invent an answer: use the stated default or ask the owner.",
+      "Business rules in business_rules and pricing_calculation are mandatory and must be enforced on the server.",
+      "Follow ai_coder_rules at the bottom of this file for every task.",
+      "Items marked [ASSUMPTION] were proposed by the planner and are awaiting owner confirmation.",
+      "For any UI work, also read docs/design/DESIGN.md completely and pass its review checklist (section 14). It overrides this file on visual decisions."
+    ],
+    "id_conventions": {
+      "page_ids": "P-xxx",
+      "feature_ids": "F-xxx",
+      "phases": "0 = preparation, 1 = MVP, 2 = growth features, 3 = polish and scale"
+    },
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "changes": [
+          "Initial specification for Care Care."
+        ]
+      },
+      {
+        "version": "1.1.0",
+        "changes": [
+          "Docker is NOT used in this project. Development database is Neon (PostgreSQL) using separate branches.",
+          "Auth.js v5 env names (AUTH_*), Next.js 16 proxy.ts, Prisma 7 notes added.",
+          "Added DIRECT_URL (non-pooled) for Prisma migrations."
+        ]
+      },
+      {
+        "version": "1.2.0",
+        "changes": [
+          "Added docs/design/DESIGN.md as the visual source of truth. If it conflicts with this file on visuals, DESIGN.md wins. On behavior, this file wins.",
+          "Brand palette, typography, and design_style updated to match DESIGN.md (removed cream background, Inter/Space Grotesk/Archivo Black, all-caps labels).",
+          "Design tokens now live in app/globals.css via Tailwind v4 @theme (tailwind.config.ts only if the project uses Tailwind v3)."
+        ]
+      }
+    ]
+  },
+  "project": {
+    "name": "Care Care",
+    "display_name": "CARE CARE",
+    "name_meaning": "In Makassar language, 'care-care' means clothing/apparel.",
+    "previous_working_name": "NEO // THREADS (deprecated, do not use in code, UI, or copy)",
+    "type": "Single-store e-commerce website (NOT a multi-vendor marketplace)",
+    "category": "Fashion / streetwear apparel and accessories",
+    "target_audience": "Young Indonesian shoppers (Gen Z and young millennials), mostly on mobile phones",
+    "market": "All of Indonesia",
+    "currency": "IDR",
+    "currency_rules": "Store money as integer rupiah (no decimals, no floats). Format as 'Rp 160.000'.",
+    "timestamps": "Store in UTC. Display in the store timezone configured in admin settings (default Asia/Jakarta, owner can change).",
+    "locale": "id-ID",
+    "catalog_size": "Dynamic. The owner adds, edits, and removes products via the admin panel. Never hardcode products.",
+    "one_line_summary": "Care Care is a single-owner online clothing store with dynamic catalog and variant-level stock, 15-minute payment window, buyer-paid payment fees, real-time courier rates across Indonesia, and one admin panel for the owner."
+  },
+  "brand": {
+    "logo": {
+      "description": "Two interlocking geometric letter C shapes forming a chain-like monogram. Terracotta and navy blocks with a folded-paper shading detail at the joint.",
+      "file_status": "Provided as PNG (Frame_1.png). SVG version needed for production.",
+      "required_variants": [
+        "full color on light",
+        "full color on dark",
+        "all navy",
+        "all white",
+        "icon-only for favicon and app icon",
+        "horizontal lockup with wordmark CARE CARE"
+      ],
+      "rules": [
+        "Keep clear space equal to the width of one logo block on all sides.",
+        "Minimum height 24px digital.",
+        "Do not recolor, stretch, rotate, or add effects."
+      ]
+    },
+    "colors": {
+      "note": "Authoritative values are in DESIGN.md section 3. Hex values are estimated from the logo image; verify against the original design file (DESIGN.md DD-03).",
+      "ink": "#2D2D56",
+      "brick": "#B8523C",
+      "brick_deep": "#9A3F2B",
+      "gold": "#F0B429",
+      "page": "#F3F3F8",
+      "surface": "#FFFFFF",
+      "line_soft": "#E4E4EE",
+      "muted": "#5B5B7B",
+      "semantic": {
+        "success": "#1F7A4D",
+        "danger": "#B3261E",
+        "warning_text": "#8A5A00",
+        "info": "#245AA8"
+      },
+      "forbidden_pairs": [
+        "ink text on brick background (2.66:1)",
+        "brick text on page background (4.41:1, use brick_deep)",
+        "gold as text color"
+      ],
+      "usage_ratio": "about 60% page/surface, 30% ink, 9% brick, 1% gold",
+      "dark_mode": "Not in storefront v1."
+    },
+    "typography": {
+      "display": "Archivo variable (wdth axis 112-125, weight 800-900), uppercase, only for display, h1, h2, wordmark",
+      "body": "Instrument Sans (400-700), sentence case for everything else",
+      "numerals": "tabular-nums for prices, order numbers, tracking numbers. No monospace labels.",
+      "minimum_body_size_px": 14,
+      "micro_size_px": 13,
+      "loading": "next/font/google with display swap. Verify the wdth axis actually loads."
+    },
+    "design_style": {
+      "name": "Kotak dan Lipatan (Grid and Fold): neo-brutalism built from the Care Care logo",
+      "principles": [
+        "Catalog is a lattice of cells sharing 2px ink borders, not separate rounded cards.",
+        "Border thickness encodes hierarchy: 3px primary, 2px interactive, 1px data dividers.",
+        "Radius 0 everywhere except pill stickers and status pills.",
+        "Hard offset shadows only on pressable elements.",
+        "45-degree chamfer on large blocks (max two per screen). Wishlist is a folded page corner (dog-ear).",
+        "Woven check motif only in: sold-out overlay, footer band, 404/empty states, payment success.",
+        "One badge per product. No gradients, glass blur, or stock illustration.",
+        "Motion only as response to user action, plus one logo-assembly moment on first home load per session."
+      ],
+      "improvements_over_reference_design": [
+        "Maximum one badge per product card.",
+        "Body and description text never below 14px.",
+        "Primary CTA is large, filled terracotta or navy, high contrast, never small white.",
+        "Navigation text is large enough and has clear hover, focus, and active states.",
+        "Every product, including accessories, shows price and a quick add action.",
+        "No placeholder text or typos in production.",
+        "Filters, sorting, ratings, and size selection exist in the catalog and product detail."
+      ],
+      "badge_enum": [
+        "NEW",
+        "BESTSELLER",
+        "TRENDING",
+        "HOT_DROP",
+        "SALE",
+        "SOLD_OUT"
+      ],
+      "badge_rule": "SOLD_OUT overrides any other badge. Otherwise at most one badge is shown, chosen by the admin per product.",
+      "badge_style": "pill sticker, rotated up to 3 degrees, gold background with ink text; SOLD_OUT uses ink background with white text. No starburst shapes."
+    },
+    "components_design_system": [
+      "Button (primary, secondary, ghost, danger)",
+      "Input, Select, Checkbox, Radio, Switch",
+      "ProductCard",
+      "Badge/Sticker",
+      "Modal and Drawer (cart drawer)",
+      "Toast",
+      "Table (admin)",
+      "Tabs",
+      "Breadcrumb",
+      "Pagination",
+      "Skeleton loader",
+      "Empty state",
+      "StatusPill (order and payment status)",
+      "PriceTag",
+      "QuantityStepper",
+      "VariantSelector",
+      "RatingStars",
+      "Countdown (drops)"
+    ],
+    "design_source": "docs/design/DESIGN.md (visual source of truth)"
+  },
+  "users_and_roles": {
+    "roles": [
+      {
+        "role": "VISITOR",
+        "auth": "none",
+        "can": [
+          "Browse catalog, search, view products, collections, journal, static pages",
+          "Use a guest cart",
+          "Track an order using order number plus email or phone"
+        ],
+        "cannot": [
+          "Checkout",
+          "Wishlist",
+          "Write reviews"
+        ]
+      },
+      {
+        "role": "CUSTOMER",
+        "auth": "Auth.js (email+password, Google)",
+        "can": [
+          "Everything a visitor can",
+          "Checkout and pay",
+          "Manage profile and addresses",
+          "View orders and tracking",
+          "Request returns",
+          "Wishlist",
+          "Write reviews on completed orders",
+          "Receive notifications and use vouchers"
+        ]
+      },
+      {
+        "role": "ADMIN",
+        "auth": "Auth.js, separate admin login page, optional 2FA in later phase",
+        "description": "The store owner. Full access to the admin panel.",
+        "can": [
+          "Everything"
+        ]
+      },
+      {
+        "role": "STAFF",
+        "phase": 3,
+        "description": "Optional employees with limited permissions.",
+        "permissions_examples": [
+          "orders.manage",
+          "products.manage",
+          "returns.manage",
+          "content.manage",
+          "reviews.moderate",
+          "finance.view",
+          "settings.manage",
+          "staff.manage"
+        ],
+        "rule": "Every admin action is checked against permissions on the server. Owner (ADMIN) has all permissions."
+      }
+    ],
+    "registration_rule": "Everyone who registers publicly becomes CUSTOMER. ADMIN is created by seed script or by the owner. There is no seller registration.",
+    "guest_checkout": "Not allowed in MVP (login required to checkout). [ASSUMPTION - see open_decisions]"
+  },
+  "tech_stack": {
+    "principle": "One language (TypeScript), one repository, popular and well-documented tools, managed hosting.",
+    "framework": "Next.js (App Router)",
+    "language": "TypeScript (strict mode)",
+    "styling": "Tailwind CSS v4. Design tokens in app/globals.css via @theme (tailwind.config.ts only if the project uses v3). Tokens defined in DESIGN.md section 13.",
+    "ui_components": "shadcn/ui as a base only. Every component must be overridden to DESIGN.md (radius 0, ink borders, hard shadows). Icons: Lucide with square caps and miter joins.",
+    "database": "PostgreSQL (Neon or Supabase managed)",
+    "orm": "Prisma 7 with @prisma/adapter-pg (works for local Postgres and Neon)",
+    "auth": "Auth.js v5 (next-auth@beta) with @auth/prisma-adapter. Credentials login requires JWT session strategy.",
+    "validation": "Zod (shared between forms and API)",
+    "forms": "React Hook Form",
+    "image_upload": "Cloudinary or UploadThing (auto resize and optimization)",
+    "payment_gateway": "Midtrans (Snap) - Xendit is the alternative",
+    "shipping": "Biteship (courier aggregator)",
+    "email": "Resend",
+    "hosting": "Vercel",
+    "monitoring": "Sentry",
+    "scheduled_jobs": "Vercel Cron (or equivalent) for expiring reservations and auto-completing orders",
+    "bot_protection": "Cloudflare Turnstile (or reCAPTCHA) on register, login, checkout",
+    "code_quality": [
+      "ESLint",
+      "Prettier",
+      "Husky + lint-staged (optional)",
+      "Dependabot or Renovate"
+    ],
+    "testing": [
+      "Vitest for unit tests",
+      "Playwright for end-to-end critical flows"
+    ],
+    "versions_note": "Next.js 16 (middleware.ts is renamed proxy.ts), Auth.js v5 installed as next-auth@beta, Prisma 7 (requires a driver adapter, prisma.config.ts, generated client in project folder, Node 20.19+ or 22.12+ or 24+). Verify current versions when starting.",
+    "containerization": "None. Docker is not used. Do not generate Dockerfile or docker-compose files unless the owner asks.",
+    "database_environments": {
+      "provider": "Neon (managed PostgreSQL)",
+      "approach": "One Neon project with separate branches per environment.",
+      "branches": {
+        "main": "production database (used only by the live site)",
+        "dev": "development database (used on the developer machine, can be reset and reseeded freely)",
+        "test": "automated tests database (optional, created when e2e tests are added)"
+      },
+      "connection_strings": {
+        "DATABASE_URL": "Pooled connection string, used by the running application.",
+        "DIRECT_URL": "Direct (non-pooled) connection string, used only by Prisma CLI for migrations."
+      },
+      "rules": [
+        "Never run experiments or seeds against the production branch.",
+        "Migrations are created on dev, committed to Git, then applied to production with prisma migrate deploy during release.",
+        "Production DATABASE_URL and DIRECT_URL exist only in the hosting provider environment settings, never on the developer machine."
+      ],
+      "alternative_if_neon_unavailable": "Install PostgreSQL directly on the machine (no Docker). Use the same variable names."
+    }
+  },
+  "project_structure": {
+    "root": "carecare/",
+    "tree": {
+      "app/(shop)": "Public and customer pages",
+      "app/(auth)": "Login, register, forgot/reset password, verify",
+      "app/admin": "All admin pages",
+      "app/api": "Route handlers, especially webhooks (payments, shipping) and cron endpoints",
+      "components/ui": "Design system primitives",
+      "components/features": "Feature components (ProductCard, CartDrawer, CheckoutForm, etc.)",
+      "lib": "Helpers, db client, auth config, money utils, calculateOrderTotal(), stock service, integrations (midtrans.ts, biteship.ts, resend.ts)",
+      "prisma": "schema.prisma, migrations, seed.ts",
+      "messages": "id.json UI strings",
+      "tests": "unit and e2e",
+      "docs": "This spec, order flow diagram, runbook",
+      "proxy.ts": "Route protection for /admin and /account (called middleware.ts before Next.js 16)",
+      "docs/decisions": "Decision records (e.g. 0002-no-docker.md)",
+      "docs/design": "DESIGN.md (visual source of truth), wireframes, mockups"
+    },
+    "layering": "UI components must not call integrations directly. Flow: UI -> server action or route handler -> service layer in lib/ -> Prisma/integration clients."
+  },
+  "business_rules": {
+    "products": {
+      "dynamic_catalog": "All products, categories, variants, images, prices, banners, collections are managed in admin and stored in the database.",
+      "variant_model": "Every product has at least one variant. A simple product without options gets one default variant. Variants are combinations of options such as Size x Color.",
+      "stock_level": "Stock is stored and enforced PER VARIANT. Product total stock is DERIVED as the sum of its active variants (shown in admin lists and used for product-level SOLD OUT).",
+      "variant_fields_required": [
+        "sku (unique)",
+        "option values",
+        "price (IDR integer)",
+        "stock (integer >= 0)",
+        "weight_gram (required, needed for shipping)"
+      ],
+      "variant_fields_optional": [
+        "compare_at_price (for strike-through sale price)",
+        "length_cm, width_cm, height_cm",
+        "barcode"
+      ],
+      "product_status": [
+        "DRAFT",
+        "ACTIVE",
+        "ARCHIVED"
+      ],
+      "sold_out_behavior": "When a variant stock is 0 it shows as unavailable in the selector. When all variants are 0 the product shows SOLD OUT and add-to-bag is disabled.",
+      "low_stock": "Admin dashboard lists variants at or below low_stock_threshold (default 5, editable in settings).",
+      "badges": "Admin picks at most one badge per product from badge_enum.",
+      "slug": "Unique, lowercase, URL-safe, auto-generated from name and editable.",
+      "soft_delete": "Products with order history are archived, never hard-deleted."
+    },
+    "drops": {
+      "phase": 2,
+      "description": "A Collection can be of type DROP with drop_starts_at and optional drop_ends_at. Before start, the page shows a countdown and buying is disabled (server-enforced). After start, normal purchase. Optional per-customer purchase limit per drop.",
+      "server_enforcement": "Never rely on the client clock. Check drop time on the server at add-to-cart and at checkout."
+    },
+    "cart": {
+      "guest_cart": "Stored server-side with a cookie session id (or client storage for MVP simplicity). Merged into the customer cart on login.",
+      "rules": [
+        "Quantity cannot exceed available stock of the variant.",
+        "Cart does NOT reserve stock.",
+        "Cart page re-validates price and stock every time it loads and shows clear messages for changes."
+      ]
+    },
+    "stock_reservation": {
+      "why": "Prevent overselling when multiple buyers purchase the last items at the same time, especially during drops.",
+      "owner_statement": "Stock is locked when the stock entered by the admin has been fully sold.",
+      "implementation": [
+        "Stock reservation happens when the buyer confirms payment (creates the order with PENDING_PAYMENT), not when adding to cart.",
+        "Reservation reduces available stock immediately (available = stock - active reservations) inside a database transaction using row locking or an atomic conditional update (UPDATE ... SET stock = stock - qty WHERE stock >= qty). Never read-then-write without protection.",
+        "Reservation lasts exactly 15 minutes (payment_window_minutes setting, default 15).",
+        "On payment success: reservation becomes a permanent deduction.",
+        "On expiry or cancellation before payment: reservation is released and stock returns.",
+        "When available stock reaches 0 the variant is automatically shown as SOLD OUT."
+      ],
+      "expiry_mechanism": "Set Midtrans custom expiry to the same 15 minutes AND run a scheduled job every minute that cancels expired PENDING_PAYMENT orders and releases reservations. Also check expiry lazily when an order is read.",
+      "late_payment_edge_case": "If a payment webhook arrives after the order was cancelled for expiry: do not silently revive the order. Mark payment_status as PAID_AFTER_EXPIRY, flag the order in admin for manual decision (restock-check then fulfill, or refund), and notify admin."
+    },
+    "order_status": {
+      "order_number_format": "CC-YYMMDD-XXXX (XXXX random alphanumeric, unique)",
+      "statuses": [
+        {
+          "code": "PENDING_PAYMENT",
+          "label_id": "Menunggu Pembayaran",
+          "description": "Order created, stock reserved, buyer has 15 minutes to pay."
+        },
+        {
+          "code": "PROCESSING",
+          "label_id": "Diproses",
+          "description": "Payment confirmed. Admin prepares and packs the order."
+        },
+        {
+          "code": "SHIPPED",
+          "label_id": "Dikirim",
+          "description": "Shipment created, tracking number (resi) issued, with the courier."
+        },
+        {
+          "code": "COMPLETED",
+          "label_id": "Selesai",
+          "description": "Delivered and accepted. Auto-completes N days after delivery (auto_complete_after_delivered_days, default 3) or when the customer confirms receipt."
+        },
+        {
+          "code": "CANCELLED",
+          "label_id": "Dibatalkan",
+          "description": "Cancelled automatically (payment expired) or manually. Stock restored."
+        },
+        {
+          "code": "RETURN",
+          "label_id": "Retur",
+          "description": "A return request exists for this order. Details are tracked in ReturnRequest."
+        }
+      ],
+      "allowed_transitions": {
+        "PENDING_PAYMENT": [
+          "PROCESSING",
+          "CANCELLED"
+        ],
+        "PROCESSING": [
+          "SHIPPED",
+          "CANCELLED"
+        ],
+        "SHIPPED": [
+          "COMPLETED",
+          "RETURN"
+        ],
+        "COMPLETED": [
+          "RETURN"
+        ],
+        "RETURN": [
+          "COMPLETED",
+          "CANCELLED"
+        ],
+        "CANCELLED": []
+      },
+      "transition_rules": [
+        "Customer may cancel only while PENDING_PAYMENT.",
+        "Admin may cancel PROCESSING orders (triggers refund flow and restock).",
+        "PENDING_PAYMENT -> PROCESSING only through a verified payment webhook, never from the browser.",
+        "RETURN -> COMPLETED when the return is rejected. RETURN -> CANCELLED (with refund) when the return is approved and refunded for the full order.",
+        "Every status change writes an OrderStatusHistory row (from, to, actor, reason, timestamp) and triggers the matching notification and email.",
+        "Invalid transitions must throw an error. Centralize transitions in one function (orderService.transition)."
+      ],
+      "payment_status_separate_field": [
+        "UNPAID",
+        "PAID",
+        "EXPIRED",
+        "FAILED",
+        "PAID_AFTER_EXPIRY",
+        "REFUND_PENDING",
+        "REFUNDED",
+        "PARTIALLY_REFUNDED"
+      ]
+    },
+    "payment": {
+      "gateway": "Midtrans (Snap)",
+      "enabled_methods": [
+        "VIRTUAL_ACCOUNT (BCA, BNI, BRI, Mandiri, Permata, etc. as enabled in Midtrans)",
+        "E_WALLET (GoPay, ShopeePay, etc. as enabled)",
+        "QRIS"
+      ],
+      "cod": "Not supported.",
+      "payment_fee_policy": "The BUYER pays the payment fee. Show it as its own line in cart summary, checkout, order detail, and invoice before the buyer pays.",
+      "payment_fee_calculation": "Fee is computed by our server from a configurable table per method (flat amount and/or percentage). The buyer chooses the payment method BEFORE paying, so create the Snap transaction restricted to the chosen method via enabled_payments so the fee shown always matches. Owner must verify the real gateway fee schedule and set the table in admin settings.",
+      "time_limit_minutes": 15,
+      "security": [
+        "Payment confirmation comes ONLY from the Midtrans notification webhook.",
+        "Verify the webhook signature (SHA512 of order_id + status_code + gross_amount + server key) and then confirm status via the Midtrans status API before changing order state.",
+        "Webhook handler must be idempotent (store processed event ids; same event twice changes nothing).",
+        "Never store card data. Never log secrets."
+      ],
+      "midtrans_amount_rule": "Midtrans gross_amount must equal the sum of item_details. Send items, shipping, tax, payment fee, and discounts as separate lines (discount as a negative line) so totals match exactly.",
+      "account_type_note": "Available payment methods can differ between individual and business-entity merchant accounts. Confirm with Midtrans before launch."
+    },
+    "shipping": {
+      "provider": "Biteship",
+      "coverage": "All of Indonesia",
+      "rates": "Real-time via Biteship rates endpoint (POST /v1/rates/couriers) using origin postal code, destination postal code, and item list (name, value, weight, quantity).",
+      "couriers": "Owner selects the allowed couriers and services in admin settings from what Biteship offers. Default: show all enabled. Exact list is an open decision.",
+      "origin": "Single warehouse/origin configured in admin settings (name, address, postal code, phone). [ASSUMPTION: one origin]",
+      "weight_rules": [
+        "Total weight = sum(variant.weight_gram x qty) + packaging_weight_gram (setting).",
+        "Minimum chargeable weight 1000 g (setting), as most couriers bill per kg."
+      ],
+      "free_shipping": {
+        "description": "Rule-based, configurable in admin. The store absorbs the discounted amount.",
+        "rule_fields": [
+          "enabled",
+          "min_subtotal",
+          "max_subsidy_amount (cap per order, null = full)",
+          "eligible_couriers (optional)",
+          "eligible_regions (optional)",
+          "start_at/end_at (optional)"
+        ],
+        "also_via_voucher": "A voucher of type FREE_SHIPPING can grant it."
+      },
+      "shipment_creation": "Admin clicks 'Kirim' on a PROCESSING order -> backend creates the Biteship order -> store waybill (resi), courier, and label link -> status SHIPPED.",
+      "tracking": "Biteship webhooks update shipment status. Customer sees a tracking timeline. Handle webhook events for status, price change, and waybill id. Webhook handler is idempotent.",
+      "price_change_risk": "If the courier reprices because actual weight differs, record the difference (shipping_adjustment) on the shipment and show it in admin finance. Accurate variant weight is therefore mandatory.",
+      "insurance": "Optional per courier. Default policy is an open decision."
+    },
+    "returns_and_refunds": {
+      "note": "Default general policy proposed by the planner, editable by the owner. [ASSUMPTION]",
+      "request_window_days": 7,
+      "eligible_reasons": [
+        "WRONG_ITEM",
+        "DEFECTIVE",
+        "DAMAGED_IN_SHIPPING",
+        "NOT_AS_DESCRIBED",
+        "WRONG_SIZE"
+      ],
+      "wrong_size_policy": "Size exchange only, subject to stock. Return shipping paid by the customer.",
+      "item_condition": "Unused, unwashed, tags and original packaging intact.",
+      "evidence": "Unboxing video or photos are required for WRONG_ITEM, DEFECTIVE, DAMAGED_IN_SHIPPING.",
+      "non_returnable": "Products flagged is_final_sale and hygiene-sensitive accessories (admin flag per product).",
+      "return_shipping_cost": "Store pays if the store is at fault (WRONG_ITEM, DEFECTIVE, DAMAGED_IN_SHIPPING, NOT_AS_DESCRIBED). Customer pays for WRONG_SIZE or personal reasons.",
+      "refund": "To the original payment method (via payment gateway or manual transfer decided by admin) or store credit voucher. Target 3 to 14 business days after the item passes inspection.",
+      "warranty": "Manufacturing defects within 7 to 14 days of delivery.",
+      "return_request_statuses": [
+        "REQUESTED",
+        "APPROVED",
+        "REJECTED",
+        "ITEM_RECEIVED",
+        "REFUNDED",
+        "EXCHANGED",
+        "CLOSED"
+      ],
+      "restock_rule": "Admin decides per returned item whether to restock after inspection."
+    },
+    "vouchers": {
+      "phase": 2,
+      "types": [
+        "PERCENT",
+        "FIXED_AMOUNT",
+        "FREE_SHIPPING"
+      ],
+      "fields": [
+        "code (unique, case-insensitive)",
+        "type",
+        "value",
+        "max_discount",
+        "min_subtotal",
+        "usage_limit_total",
+        "usage_limit_per_user",
+        "starts_at",
+        "ends_at",
+        "applies_to (ALL | categories | products)",
+        "is_active"
+      ],
+      "stacking": "One voucher per order. [ASSUMPTION]",
+      "validation": "Always validated on the server at cart, at checkout, and again at order creation. A voucher use is counted when the order is created and released if the order expires or is cancelled."
+    },
+    "reviews": {
+      "phase": 2,
+      "who_can_review": "Customers with a COMPLETED order that contains the item. One review per order item.",
+      "content": "Rating 1 to 5, text, up to 3 photos.",
+      "moderation": "Published immediately, admin can hide or delete. Admin can reply publicly. Reported reviews flagged. [ASSUMPTION: post-moderation]",
+      "display": "Average rating and count on product cards and detail page."
+    },
+    "accounts_and_data": {
+      "email_verification": "Required before the first checkout.",
+      "address_book": "Customers can save multiple addresses with one default. Address includes recipient name, phone, province, city, district, postal code (needed for rates), full address, notes.",
+      "account_deletion": "Customer can request deletion and data export (UU PDP rights). Order records needed for tax/accounting are retained in anonymized form."
+    }
+  },
+  "pricing_calculation": {
+    "owner_requirement": "Total must include goods, shipping, tax, and fees, calculated consistently everywhere.",
+    "single_source_of_truth": "lib/pricing/calculateOrderTotal.ts. Used by cart, checkout, order creation, and admin. No other place may compute totals.",
+    "formula": [
+      "subtotal = sum(variant_price x qty)",
+      "voucher_discount = computed from voucher rules (never more than subtotal)",
+      "shipping_cost = rate returned by Biteship for the chosen courier service",
+      "shipping_discount = free shipping rule or FREE_SHIPPING voucher, capped at shipping_cost",
+      "taxable_base = subtotal - voucher_discount (+ shipping_cost - shipping_discount if the owner decides shipping is taxable)",
+      "tax = if tax.enabled then rate x taxable_base (if prices are tax-exclusive) or the tax portion already inside prices (if tax-inclusive), else 0",
+      "payment_fee = lookup by chosen payment method from fee table",
+      "grand_total = subtotal - voucher_discount + shipping_cost - shipping_discount + tax(if exclusive) + payment_fee"
+    ],
+    "rounding": "Compute in integer rupiah. Round each line using the same rounding function (round half up) and document it. Totals must never be off by 1 rupiah between screens.",
+    "tax_settings": {
+      "enabled": "false by default until the owner confirms PKP/PPN status",
+      "mode": "INCLUSIVE or EXCLUSIVE (open decision)",
+      "rate_percent": "Configurable in admin. Do not hardcode. Confirm current rate with a tax consultant.",
+      "shipping_taxable": "Configurable, default false"
+    },
+    "snapshot_rule": "At order creation, copy into the order: item names, SKUs, unit prices, quantities, voucher code and discount, shipping service and cost, tax rate and amount, payment fee, grand_total. Later price or setting changes must never alter existing orders.",
+    "server_only": "The client may display an estimate but the server recalculates everything at order creation and rejects mismatches or uses the server value.",
+    "example": {
+      "subtotal": 275000,
+      "voucher_discount": 0,
+      "shipping_cost": 24000,
+      "shipping_discount": 0,
+      "tax": 0,
+      "payment_fee": 4000,
+      "grand_total": 303000
+    }
+  },
+  "integrations": {
+    "midtrans": {
+      "environments": [
+        "sandbox (development and testing)",
+        "production"
+      ],
+      "flows": [
+        "Create Snap transaction restricted to chosen method with 15 minute expiry",
+        "Receive notification webhook at /api/webhooks/midtrans",
+        "Verify signature and status, update Payment and Order",
+        "Refund via API or manual (decide per method)"
+      ],
+      "env_vars": [
+        "MIDTRANS_SERVER_KEY",
+        "NEXT_PUBLIC_MIDTRANS_CLIENT_KEY",
+        "MIDTRANS_IS_PRODUCTION"
+      ]
+    },
+    "biteship": {
+      "flows": [
+        "Rates for checkout",
+        "Create shipment order",
+        "Receive webhooks at /api/webhooks/biteship (status, price, waybill)",
+        "Tracking lookup"
+      ],
+      "env_vars": [
+        "BITESHIP_API_KEY",
+        "BITESHIP_WEBHOOK_SECRET (if applicable)",
+        "BITESHIP_ORIGIN_POSTAL_CODE"
+      ],
+      "area_data": "Address forms need province, city, district, postal code. Use Biteship maps/area lookup or a local area dataset, so postal code is always valid."
+    },
+    "resend": {
+      "use": "Transactional email",
+      "env_vars": [
+        "RESEND_API_KEY",
+        "EMAIL_FROM"
+      ]
+    },
+    "cloudinary_or_uploadthing": {
+      "use": "Product, banner, review, and return evidence images",
+      "rules": [
+        "Max 5 MB per image",
+        "jpg, png, webp",
+        "Generate responsive sizes",
+        "Store public id and URL"
+      ]
+    },
+    "auth_google": {
+      "env_vars": [
+        "AUTH_GOOGLE_ID",
+        "AUTH_GOOGLE_SECRET"
+      ],
+      "note": "Auth.js v5 reads AUTH_* variables. NEXTAUTH_* names are legacy."
+    },
+    "turnstile": {
+      "env_vars": [
+        "NEXT_PUBLIC_TURNSTILE_SITE_KEY",
+        "TURNSTILE_SECRET_KEY"
+      ]
+    },
+    "sentry": {
+      "env_vars": [
+        "SENTRY_DSN"
+      ]
+    },
+    "general_env_vars": [
+      "DATABASE_URL",
+      "DIRECT_URL",
+      "AUTH_SECRET",
+      "NEXT_PUBLIC_APP_URL",
+      "CRON_SECRET",
+      "ADMIN_NOTIFICATION_EMAIL"
+    ],
+    "webhook_rules": [
+      "Always verify authenticity.",
+      "Respond fast with 200 after persisting the event.",
+      "Store raw event in WebhookEvent table for audit and idempotency.",
+      "Handle retries and out-of-order events safely."
+    ]
+  },
+  "data_model": {
+    "note": "Conceptual model for Prisma. Types are indicative. All tables have id, created_at, updated_at unless stated. Money = Int (IDR). Add indexes on foreign keys, slug, sku, order_number, status, created_at.",
+    "entities": {
+      "User": [
+        "email unique",
+        "password_hash nullable (Google users)",
+        "name",
+        "phone",
+        "role enum(CUSTOMER, ADMIN, STAFF)",
+        "email_verified_at",
+        "permissions Json nullable (STAFF)",
+        "is_blocked boolean",
+        "last_login_at"
+      ],
+      "Address": [
+        "user_id",
+        "label",
+        "recipient_name",
+        "phone",
+        "province",
+        "city",
+        "district",
+        "postal_code",
+        "address_line",
+        "notes",
+        "latitude nullable",
+        "longitude nullable",
+        "is_default"
+      ],
+      "Category": [
+        "name",
+        "slug unique",
+        "parent_id nullable",
+        "image",
+        "sort_order",
+        "is_active"
+      ],
+      "Product": [
+        "name",
+        "slug unique",
+        "description (rich text)",
+        "category_id",
+        "status enum(DRAFT, ACTIVE, ARCHIVED)",
+        "badge enum nullable",
+        "is_final_sale",
+        "is_returnable",
+        "size_guide_id nullable",
+        "seo_title",
+        "seo_description",
+        "available_from nullable",
+        "tags String[]"
+      ],
+      "ProductImage": [
+        "product_id",
+        "url",
+        "public_id",
+        "alt",
+        "sort_order",
+        "variant_id nullable"
+      ],
+      "ProductOption": [
+        "product_id",
+        "name (e.g. Size, Color)",
+        "sort_order"
+      ],
+      "ProductOptionValue": [
+        "option_id",
+        "value (e.g. M, Black)",
+        "color_hex nullable",
+        "sort_order"
+      ],
+      "ProductVariant": [
+        "product_id",
+        "sku unique",
+        "option_value_ids",
+        "price Int",
+        "compare_at_price Int nullable",
+        "stock Int >= 0",
+        "weight_gram Int",
+        "length_cm",
+        "width_cm",
+        "height_cm",
+        "is_active"
+      ],
+      "StockReservation": [
+        "variant_id",
+        "order_id",
+        "quantity",
+        "expires_at",
+        "status enum(ACTIVE, CONSUMED, RELEASED)"
+      ],
+      "StockMovement": [
+        "variant_id",
+        "delta Int",
+        "reason enum(MANUAL_ADJUST, SALE, CANCEL_RESTOCK, RETURN_RESTOCK, INITIAL)",
+        "reference_id",
+        "actor_id",
+        "note"
+      ],
+      "Cart": [
+        "user_id nullable",
+        "session_id nullable",
+        "voucher_code nullable"
+      ],
+      "CartItem": [
+        "cart_id",
+        "variant_id",
+        "quantity"
+      ],
+      "Order": [
+        "order_number unique",
+        "user_id",
+        "status enum(PENDING_PAYMENT, PROCESSING, SHIPPED, COMPLETED, CANCELLED, RETURN)",
+        "payment_status enum",
+        "address_snapshot Json",
+        "subtotal",
+        "voucher_code",
+        "voucher_discount",
+        "shipping_service",
+        "shipping_cost",
+        "shipping_discount",
+        "tax_rate",
+        "tax_amount",
+        "payment_method",
+        "payment_fee",
+        "grand_total",
+        "expires_at",
+        "paid_at",
+        "shipped_at",
+        "delivered_at",
+        "completed_at",
+        "cancelled_at",
+        "cancel_reason",
+        "customer_note",
+        "admin_note"
+      ],
+      "OrderItem": [
+        "order_id",
+        "variant_id",
+        "product_name_snapshot",
+        "variant_label_snapshot",
+        "sku_snapshot",
+        "image_snapshot",
+        "unit_price",
+        "quantity",
+        "line_total",
+        "weight_gram"
+      ],
+      "OrderStatusHistory": [
+        "order_id",
+        "from_status",
+        "to_status",
+        "actor_type enum(SYSTEM, CUSTOMER, ADMIN)",
+        "actor_id",
+        "reason"
+      ],
+      "Payment": [
+        "order_id",
+        "gateway 'midtrans'",
+        "gateway_order_id",
+        "method",
+        "channel (bank/e-wallet name)",
+        "amount",
+        "status",
+        "va_number nullable",
+        "qr_string nullable",
+        "payment_url nullable",
+        "expires_at",
+        "settled_at",
+        "raw_response Json"
+      ],
+      "Shipment": [
+        "order_id",
+        "provider 'biteship'",
+        "provider_order_id",
+        "courier_code",
+        "courier_service",
+        "waybill_id",
+        "label_url",
+        "status",
+        "cost_quoted",
+        "cost_actual nullable",
+        "shipping_adjustment",
+        "delivered_at"
+      ],
+      "ShipmentEvent": [
+        "shipment_id",
+        "status",
+        "note",
+        "occurred_at",
+        "raw Json"
+      ],
+      "ReturnRequest": [
+        "order_id",
+        "user_id",
+        "status enum",
+        "reason enum",
+        "description",
+        "evidence_urls String[]",
+        "resolution enum(REFUND, EXCHANGE, STORE_CREDIT) nullable",
+        "admin_note",
+        "refund_amount",
+        "return_waybill nullable",
+        "decided_at",
+        "decided_by"
+      ],
+      "ReturnItem": [
+        "return_id",
+        "order_item_id",
+        "quantity",
+        "restock boolean nullable"
+      ],
+      "Voucher": [
+        "see business_rules.vouchers.fields",
+        "times_used Int"
+      ],
+      "VoucherRedemption": [
+        "voucher_id",
+        "order_id",
+        "user_id",
+        "amount",
+        "status enum(RESERVED, CONSUMED, RELEASED)"
+      ],
+      "Review": [
+        "order_item_id unique",
+        "product_id",
+        "user_id",
+        "rating 1-5",
+        "body",
+        "photo_urls String[]",
+        "status enum(PUBLISHED, HIDDEN)",
+        "admin_reply nullable",
+        "reported boolean"
+      ],
+      "WishlistItem": [
+        "user_id",
+        "product_id",
+        "unique(user_id, product_id)"
+      ],
+      "Notification": [
+        "user_id",
+        "type",
+        "title",
+        "body",
+        "link",
+        "read_at nullable"
+      ],
+      "Banner": [
+        "title",
+        "subtitle",
+        "image_desktop",
+        "image_mobile",
+        "cta_label",
+        "cta_link",
+        "placement enum(HOME_HERO, HOME_STRIP, ...)",
+        "sort_order",
+        "starts_at",
+        "ends_at",
+        "is_active"
+      ],
+      "Collection": [
+        "title",
+        "slug",
+        "description",
+        "cover_image",
+        "type enum(STANDARD, DROP)",
+        "drop_starts_at",
+        "drop_ends_at",
+        "purchase_limit_per_user nullable",
+        "is_active"
+      ],
+      "CollectionProduct": [
+        "collection_id",
+        "product_id",
+        "sort_order"
+      ],
+      "Article": [
+        "title",
+        "slug",
+        "cover_image",
+        "excerpt",
+        "body",
+        "status",
+        "published_at",
+        "seo fields"
+      ],
+      "FaqItem": [
+        "question",
+        "answer",
+        "category",
+        "sort_order",
+        "is_active"
+      ],
+      "StaticPage": [
+        "slug (privacy, terms, returns, shipping, about)",
+        "title",
+        "body",
+        "updated_at"
+      ],
+      "SizeGuide": [
+        "name",
+        "content (table/rich text)"
+      ],
+      "StoreSetting": [
+        "key unique",
+        "value Json",
+        "(see admin_settings for keys)"
+      ],
+      "ActivityLog": [
+        "actor_id",
+        "action",
+        "entity_type",
+        "entity_id",
+        "before Json",
+        "after Json",
+        "ip",
+        "user_agent"
+      ],
+      "WebhookEvent": [
+        "provider",
+        "external_id",
+        "payload Json",
+        "processed_at",
+        "status",
+        "unique(provider, external_id)"
+      ],
+      "EmailLog": [
+        "to",
+        "template",
+        "status",
+        "provider_id",
+        "error"
+      ]
+    },
+    "critical_constraints": [
+      "ProductVariant.stock >= 0 (CHECK constraint).",
+      "Stock changes only through stockService so every change writes a StockMovement.",
+      "Order items and prices are snapshots, never joined live for historical display.",
+      "unique(order_number), unique(sku), unique(slug)."
+    ]
+  },
+  "features": {
+    "storefront": [
+      {
+        "id": "F-001",
+        "name": "Dynamic home page",
+        "phase": 1,
+        "description": "Hero banner, featured collection or latest drop, category tiles, trending and new products, journal teaser, newsletter signup. All blocks controlled from admin banners, collections, and product flags."
+      },
+      {
+        "id": "F-002",
+        "name": "Catalog with filters and sort",
+        "phase": 1,
+        "description": "Grid with filters by category, size, color, price range, availability, badge. Sort by newest, price asc/desc, bestseller. URL reflects filters. Pagination or load more (24 per page). Skeleton loading."
+      },
+      {
+        "id": "F-003",
+        "name": "Search",
+        "phase": 1,
+        "description": "Search box with suggestions (debounced), results page, empty-result suggestions. Start with PostgreSQL full-text or ILIKE; upgrade later if needed."
+      },
+      {
+        "id": "F-004",
+        "name": "Product detail",
+        "phase": 1,
+        "description": "Gallery with zoom, variant selector (disabled if out of stock), price (and strike-through compare price), stock hint ('Sisa 3'), quantity, add to bag, size guide link, shipping and returns summary, reviews, related products. Sticky add-to-bag on mobile."
+      },
+      {
+        "id": "F-005",
+        "name": "Cart (drawer and page)",
+        "phase": 1,
+        "description": "Update quantity, remove, stock validation messages, voucher input (phase 2), subtotal, proceed to checkout."
+      },
+      {
+        "id": "F-006",
+        "name": "Collections and Drops",
+        "phase": 2,
+        "description": "Curated collections, drop countdown, server-enforced start time, optional purchase limits."
+      },
+      {
+        "id": "F-007",
+        "name": "Wishlist",
+        "phase": 2,
+        "description": "Heart toggle on product card and detail. Requires login (prompt to log in)."
+      },
+      {
+        "id": "F-008",
+        "name": "Reviews and ratings",
+        "phase": 2,
+        "description": "See business_rules.reviews."
+      },
+      {
+        "id": "F-009",
+        "name": "Guest order tracking",
+        "phase": 2,
+        "description": "Enter order number plus email or phone to view status and tracking."
+      },
+      {
+        "id": "F-010",
+        "name": "Journal (blog and lookbook)",
+        "phase": 3,
+        "description": "Articles with cover, body, related products."
+      },
+      {
+        "id": "F-011",
+        "name": "Static and help pages",
+        "phase": 1,
+        "description": "About, FAQ, Contact form (sends email to store), Size Guide, policies (privacy, terms, returns, shipping). Policies are required for payment gateway verification."
+      }
+    ],
+    "account_and_auth": [
+      {
+        "id": "F-020",
+        "name": "Register and login",
+        "phase": 1,
+        "description": "Email+password and Google. Password rules min 8 chars. Bot protection. Rate limiting. Verification email."
+      },
+      {
+        "id": "F-021",
+        "name": "Forgot and reset password",
+        "phase": 1,
+        "description": "Signed, single-use, expiring (e.g. 30 minutes) token via email."
+      },
+      {
+        "id": "F-022",
+        "name": "Profile and addresses",
+        "phase": 1,
+        "description": "Edit name, phone, password. Address book with default address and valid postal code."
+      },
+      {
+        "id": "F-023",
+        "name": "Order history, detail, tracking",
+        "phase": 1,
+        "description": "List with status filter, detail with items and totals, payment instructions while pending, countdown to expiry, tracking timeline, invoice view/print."
+      },
+      {
+        "id": "F-024",
+        "name": "Return request",
+        "phase": 2,
+        "description": "From a completed or delivered order within the window, choose items, reason, upload evidence, track status."
+      },
+      {
+        "id": "F-025",
+        "name": "Notifications",
+        "phase": 2,
+        "description": "In-app list with unread count, plus email. Types listed in emails_and_notifications."
+      },
+      {
+        "id": "F-026",
+        "name": "My vouchers",
+        "phase": 2,
+        "description": "List active vouchers available to the user."
+      }
+    ],
+    "checkout": [
+      {
+        "id": "F-030",
+        "name": "Checkout",
+        "phase": 1,
+        "description": "Steps: address -> shipping method (live Biteship rates) -> payment method -> review. Shows full cost breakdown including payment fee and tax. Server revalidates stock and prices. Creates order and reservation on confirm."
+      },
+      {
+        "id": "F-031",
+        "name": "Payment page",
+        "phase": 1,
+        "description": "Shows payment instructions per method (VA number, e-wallet deeplink, QRIS), amount, 15-minute countdown, auto-refresh/poll status, 'change payment method' only if allowed by gateway (otherwise new order flow), expired and failed states."
+      },
+      {
+        "id": "F-032",
+        "name": "Order confirmation",
+        "phase": 1,
+        "description": "Success page and email with summary."
+      }
+    ],
+    "admin": [
+      {
+        "id": "F-040",
+        "name": "Admin dashboard",
+        "phase": 1,
+        "description": "Today and period sales, orders by status, new orders needing processing, low stock list, top products, simple revenue chart."
+      },
+      {
+        "id": "F-041",
+        "name": "Product management",
+        "phase": 1,
+        "description": "List with search, filter, status, stock total. Create/edit with images upload and reorder, options and variants generator (size x color), per-variant price, stock, weight, SKU, badge (max one), category, SEO, final-sale flag, draft/active/archive. Bulk stock edit. Stock adjustment with reason (StockMovement)."
+      },
+      {
+        "id": "F-042",
+        "name": "Category management",
+        "phase": 1,
+        "description": "Create, edit, reorder, nest (max 2 levels)."
+      },
+      {
+        "id": "F-043",
+        "name": "Order management",
+        "phase": 1,
+        "description": "List with filters (status, date, payment method, search by number/name). Detail: items, customer, address, payment, timeline. Actions: mark packed, create shipment (resi), print shipping label and packing slip, cancel with reason, add admin note. Real-time or near real-time new order indicator."
+      },
+      {
+        "id": "F-044",
+        "name": "Returns and refunds management",
+        "phase": 2,
+        "description": "Review requests and evidence, approve or reject with reason, mark item received, decide restock, record refund, update status."
+      },
+      {
+        "id": "F-045",
+        "name": "Customer management",
+        "phase": 2,
+        "description": "List, detail with order history and total spent, block or unblock."
+      },
+      {
+        "id": "F-046",
+        "name": "Marketing: banners, collections, drops",
+        "phase": 2,
+        "description": "Manage hero banners with schedule, collections and drops with products and times."
+      },
+      {
+        "id": "F-047",
+        "name": "Voucher management",
+        "phase": 2,
+        "description": "Create and manage vouchers per business_rules.vouchers."
+      },
+      {
+        "id": "F-048",
+        "name": "Review moderation",
+        "phase": 2,
+        "description": "Hide, delete, reply, view reported reviews."
+      },
+      {
+        "id": "F-049",
+        "name": "Content management",
+        "phase": 3,
+        "description": "Articles, FAQ, static pages with rich text editor."
+      },
+      {
+        "id": "F-050",
+        "name": "Finance and reports",
+        "phase": 3,
+        "description": "Sales report by period, payment method breakdown, shipping cost vs charged, payment fees collected, tax collected, refunds. Export CSV."
+      },
+      {
+        "id": "F-051",
+        "name": "Settings",
+        "phase": 1,
+        "description": "Store profile, origin address, shipping (couriers, free shipping rules, packaging weight), payment (fee table, time limit), tax, low stock threshold, return policy values, maintenance mode. Staff and roles and activity log in phase 3."
+      },
+      {
+        "id": "F-052",
+        "name": "Staff, roles, activity log",
+        "phase": 3,
+        "description": "Invite staff, assign permissions, view audit trail of admin actions."
+      }
+    ],
+    "system": [
+      {
+        "id": "F-060",
+        "name": "Scheduled jobs",
+        "phase": 1,
+        "description": "Every minute: cancel expired PENDING_PAYMENT orders and release stock and vouchers. Daily: auto-complete delivered orders after N days, send review requests, clean old sessions."
+      },
+      {
+        "id": "F-061",
+        "name": "Transactional emails",
+        "phase": 1,
+        "description": "See emails_and_notifications."
+      },
+      {
+        "id": "F-062",
+        "name": "Error and empty states",
+        "phase": 1,
+        "description": "Branded 404, 500, 403, maintenance, empty cart/wishlist/orders, loading skeletons."
+      },
+      {
+        "id": "F-063",
+        "name": "Analytics and marketing tags",
+        "phase": 3,
+        "description": "Google Analytics 4, Meta Pixel with cookie consent."
+      }
+    ]
+  },
+  "pages": {
+    "note": "Every page must be responsive (mobile-first) and include loading, empty, and error states where data is fetched. 'Design' means a Figma or HTML design is needed in both mobile and desktop.",
+    "public": [
+      {
+        "id": "P-001",
+        "route": "/",
+        "title_id": "Beranda",
+        "phase": 1,
+        "purpose": "Brand impression and product discovery.",
+        "sections": [
+          "Header/nav + search + cart count",
+          "Hero banner (large primary CTA)",
+          "Latest drop or featured collection",
+          "Category tiles",
+          "New and trending products",
+          "Brand statement (meaning of Care Care)",
+          "Journal teaser (phase 3)",
+          "Footer with legal info, links, social, newsletter"
+        ]
+      },
+      {
+        "id": "P-002",
+        "route": "/products",
+        "title_id": "Katalog",
+        "phase": 1,
+        "purpose": "Browse all products with filters and sort.",
+        "sections": [
+          "Breadcrumb",
+          "Filter sidebar (drawer on mobile)",
+          "Sort dropdown",
+          "Product grid",
+          "Pagination"
+        ]
+      },
+      {
+        "id": "P-003",
+        "route": "/search?q=",
+        "title_id": "Hasil Pencarian",
+        "phase": 1,
+        "purpose": "Search results.",
+        "sections": [
+          "Query summary",
+          "Results grid",
+          "No-result suggestions"
+        ]
+      },
+      {
+        "id": "P-004",
+        "route": "/products/[slug]",
+        "title_id": "Detail Produk",
+        "phase": 1,
+        "purpose": "Product info and purchase.",
+        "sections": [
+          "Gallery",
+          "Title, price, rating",
+          "Variant selector",
+          "Quantity + Add to bag",
+          "Accordion: description, size guide, shipping and returns",
+          "Reviews",
+          "Related products"
+        ]
+      },
+      {
+        "id": "P-005",
+        "route": "/collections",
+        "title_id": "Koleksi",
+        "phase": 2,
+        "purpose": "List collections and drops.",
+        "sections": [
+          "Collection cards",
+          "Upcoming drop countdowns"
+        ]
+      },
+      {
+        "id": "P-006",
+        "route": "/collections/[slug]",
+        "title_id": "Detail Koleksi",
+        "phase": 2,
+        "purpose": "Products in a collection or drop.",
+        "sections": [
+          "Collection hero",
+          "Countdown if drop not started",
+          "Product grid"
+        ]
+      },
+      {
+        "id": "P-007",
+        "route": "/journal",
+        "title_id": "Journal",
+        "phase": 3,
+        "purpose": "Article list.",
+        "sections": [
+          "Featured article",
+          "Article grid"
+        ]
+      },
+      {
+        "id": "P-008",
+        "route": "/journal/[slug]",
+        "title_id": "Artikel",
+        "phase": 3,
+        "purpose": "Single article.",
+        "sections": [
+          "Cover",
+          "Body",
+          "Related products"
+        ]
+      },
+      {
+        "id": "P-009",
+        "route": "/cart",
+        "title_id": "Keranjang",
+        "phase": 1,
+        "purpose": "Review cart.",
+        "sections": [
+          "Item list",
+          "Voucher input (phase 2)",
+          "Summary",
+          "Checkout button",
+          "Empty state"
+        ]
+      },
+      {
+        "id": "P-010",
+        "route": "/track-order",
+        "title_id": "Lacak Pesanan",
+        "phase": 2,
+        "purpose": "Guest order tracking.",
+        "sections": [
+          "Form (order number + email/phone)",
+          "Status timeline"
+        ]
+      },
+      {
+        "id": "P-011",
+        "route": "/about",
+        "title_id": "Tentang Kami",
+        "phase": 1,
+        "purpose": "Brand story and name meaning.",
+        "sections": [
+          "Story",
+          "Values",
+          "Contact CTA"
+        ]
+      },
+      {
+        "id": "P-012",
+        "route": "/faq",
+        "title_id": "FAQ",
+        "phase": 1,
+        "purpose": "Help center.",
+        "sections": [
+          "Search",
+          "Grouped questions"
+        ]
+      },
+      {
+        "id": "P-013",
+        "route": "/contact",
+        "title_id": "Kontak",
+        "phase": 1,
+        "purpose": "Contact the store.",
+        "sections": [
+          "Form",
+          "Store info (email, phone/WhatsApp, address, hours)"
+        ]
+      },
+      {
+        "id": "P-014",
+        "route": "/policies/[slug]",
+        "title_id": "Kebijakan",
+        "phase": 1,
+        "purpose": "Privacy policy, terms, returns, shipping, payment policies.",
+        "sections": [
+          "Rich text content",
+          "Last updated date"
+        ]
+      },
+      {
+        "id": "P-015",
+        "route": "/size-guide",
+        "title_id": "Panduan Ukuran",
+        "phase": 1,
+        "purpose": "Size charts.",
+        "sections": [
+          "Tables by product type",
+          "How to measure"
+        ]
+      }
+    ],
+    "auth": [
+      {
+        "id": "P-020",
+        "route": "/login",
+        "title_id": "Masuk",
+        "phase": 1,
+        "sections": [
+          "Email/password form",
+          "Google button",
+          "Links to register and forgot password"
+        ]
+      },
+      {
+        "id": "P-021",
+        "route": "/register",
+        "title_id": "Daftar",
+        "phase": 1,
+        "sections": [
+          "Name, email, phone, password",
+          "Consent checkbox for terms and privacy",
+          "Google button",
+          "Bot check"
+        ]
+      },
+      {
+        "id": "P-022",
+        "route": "/forgot-password",
+        "title_id": "Lupa Password",
+        "phase": 1,
+        "sections": [
+          "Email form",
+          "Generic success message (do not reveal if email exists)"
+        ]
+      },
+      {
+        "id": "P-023",
+        "route": "/reset-password",
+        "title_id": "Reset Password",
+        "phase": 1,
+        "sections": [
+          "New password form",
+          "Invalid/expired token state"
+        ]
+      },
+      {
+        "id": "P-024",
+        "route": "/verify",
+        "title_id": "Verifikasi Email",
+        "phase": 1,
+        "sections": [
+          "Verification result",
+          "Resend link"
+        ]
+      },
+      {
+        "id": "P-025",
+        "route": "/admin/login",
+        "title_id": "Masuk Admin",
+        "phase": 1,
+        "sections": [
+          "Email/password",
+          "No public link to this page"
+        ]
+      }
+    ],
+    "customer": [
+      {
+        "id": "P-030",
+        "route": "/checkout",
+        "title_id": "Checkout",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Address select/add",
+          "Shipping options with prices and ETA",
+          "Payment method select with fee shown",
+          "Order summary with full breakdown",
+          "Place order button (disabled until valid)"
+        ]
+      },
+      {
+        "id": "P-031",
+        "route": "/checkout/payment/[orderNumber]",
+        "title_id": "Pembayaran",
+        "phase": 1,
+        "access": "CUSTOMER (owner of order)",
+        "sections": [
+          "Amount and countdown",
+          "Payment instructions by method",
+          "Status auto-refresh",
+          "States: waiting, paid, expired, failed"
+        ]
+      },
+      {
+        "id": "P-032",
+        "route": "/checkout/success/[orderNumber]",
+        "title_id": "Pesanan Berhasil",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Success message",
+          "Order summary",
+          "Next steps"
+        ]
+      },
+      {
+        "id": "P-033",
+        "route": "/account",
+        "title_id": "Akun Saya",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "Overview: recent orders, quick links"
+        ]
+      },
+      {
+        "id": "P-034",
+        "route": "/account/profile",
+        "title_id": "Profil",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Personal data form",
+          "Change password",
+          "Delete account / export data request"
+        ]
+      },
+      {
+        "id": "P-035",
+        "route": "/account/addresses",
+        "title_id": "Buku Alamat",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Address list",
+          "Add/edit modal",
+          "Set default"
+        ]
+      },
+      {
+        "id": "P-036",
+        "route": "/account/orders",
+        "title_id": "Riwayat Pesanan",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Status tabs",
+          "Order cards",
+          "Pagination"
+        ]
+      },
+      {
+        "id": "P-037",
+        "route": "/account/orders/[orderNumber]",
+        "title_id": "Detail Pesanan",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Status",
+          "Items",
+          "Cost breakdown",
+          "Address",
+          "Payment info",
+          "Actions: pay now, cancel (pending only), confirm received, request return, write review, invoice"
+        ]
+      },
+      {
+        "id": "P-038",
+        "route": "/account/orders/[orderNumber]/tracking",
+        "title_id": "Lacak Pesanan",
+        "phase": 1,
+        "access": "CUSTOMER",
+        "sections": [
+          "Courier + resi with copy button",
+          "Tracking timeline"
+        ]
+      },
+      {
+        "id": "P-039",
+        "route": "/account/orders/[orderNumber]/return",
+        "title_id": "Ajukan Retur",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "Select items",
+          "Reason",
+          "Evidence upload",
+          "Policy summary",
+          "Status after submit"
+        ]
+      },
+      {
+        "id": "P-040",
+        "route": "/account/wishlist",
+        "title_id": "Wishlist",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "Product grid",
+          "Empty state"
+        ]
+      },
+      {
+        "id": "P-041",
+        "route": "/account/orders/[orderNumber]/review",
+        "title_id": "Tulis Ulasan",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "Per-item rating, text, photos"
+        ]
+      },
+      {
+        "id": "P-042",
+        "route": "/account/notifications",
+        "title_id": "Notifikasi",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "List, mark as read"
+        ]
+      },
+      {
+        "id": "P-043",
+        "route": "/account/vouchers",
+        "title_id": "Voucher Saya",
+        "phase": 2,
+        "access": "CUSTOMER",
+        "sections": [
+          "Voucher cards with conditions and expiry"
+        ]
+      }
+    ],
+    "admin": [
+      {
+        "id": "P-050",
+        "route": "/admin",
+        "title_id": "Dashboard",
+        "phase": 1,
+        "sections": [
+          "KPI cards",
+          "Sales chart",
+          "Orders needing action",
+          "Low stock",
+          "Top products"
+        ]
+      },
+      {
+        "id": "P-051",
+        "route": "/admin/products",
+        "title_id": "Produk",
+        "phase": 1,
+        "sections": [
+          "Table with search/filter",
+          "Bulk actions",
+          "Add product button"
+        ]
+      },
+      {
+        "id": "P-052",
+        "route": "/admin/products/new and /admin/products/[id]",
+        "title_id": "Tambah/Edit Produk",
+        "phase": 1,
+        "sections": [
+          "Basic info",
+          "Images",
+          "Options and variants table (price, stock, weight, SKU)",
+          "Category, badge, flags",
+          "SEO",
+          "Save draft / publish"
+        ]
+      },
+      {
+        "id": "P-053",
+        "route": "/admin/categories",
+        "title_id": "Kategori",
+        "phase": 1,
+        "sections": [
+          "Tree list",
+          "Add/edit modal"
+        ]
+      },
+      {
+        "id": "P-054",
+        "route": "/admin/orders",
+        "title_id": "Pesanan",
+        "phase": 1,
+        "sections": [
+          "Status tabs with counts",
+          "Table",
+          "Filters"
+        ]
+      },
+      {
+        "id": "P-055",
+        "route": "/admin/orders/[id]",
+        "title_id": "Detail Pesanan",
+        "phase": 1,
+        "sections": [
+          "Header with status and actions",
+          "Items",
+          "Customer and address",
+          "Payment",
+          "Shipment + create shipment + print label",
+          "Timeline",
+          "Admin notes"
+        ]
+      },
+      {
+        "id": "P-056",
+        "route": "/admin/returns",
+        "title_id": "Retur dan Refund",
+        "phase": 2,
+        "sections": [
+          "List",
+          "Detail drawer or page with evidence and decision actions"
+        ]
+      },
+      {
+        "id": "P-057",
+        "route": "/admin/customers",
+        "title_id": "Pelanggan",
+        "phase": 2,
+        "sections": [
+          "Table",
+          "Detail with orders"
+        ]
+      },
+      {
+        "id": "P-058",
+        "route": "/admin/marketing/banners",
+        "title_id": "Banner",
+        "phase": 2,
+        "sections": [
+          "List",
+          "Editor with schedule and mobile/desktop images"
+        ]
+      },
+      {
+        "id": "P-059",
+        "route": "/admin/marketing/collections",
+        "title_id": "Koleksi dan Drop",
+        "phase": 2,
+        "sections": [
+          "List",
+          "Editor with product picker and drop times"
+        ]
+      },
+      {
+        "id": "P-060",
+        "route": "/admin/marketing/vouchers",
+        "title_id": "Voucher",
+        "phase": 2,
+        "sections": [
+          "List",
+          "Editor"
+        ]
+      },
+      {
+        "id": "P-061",
+        "route": "/admin/reviews",
+        "title_id": "Ulasan",
+        "phase": 2,
+        "sections": [
+          "List",
+          "Reply",
+          "Hide/delete"
+        ]
+      },
+      {
+        "id": "P-062",
+        "route": "/admin/content/articles",
+        "title_id": "Artikel Journal",
+        "phase": 3,
+        "sections": [
+          "List",
+          "Editor"
+        ]
+      },
+      {
+        "id": "P-063",
+        "route": "/admin/content/faq",
+        "title_id": "FAQ",
+        "phase": 3,
+        "sections": [
+          "Sortable list",
+          "Editor"
+        ]
+      },
+      {
+        "id": "P-064",
+        "route": "/admin/content/pages",
+        "title_id": "Halaman Statis",
+        "phase": 1,
+        "sections": [
+          "Edit privacy, terms, returns, shipping, about"
+        ]
+      },
+      {
+        "id": "P-065",
+        "route": "/admin/finance",
+        "title_id": "Keuangan dan Laporan",
+        "phase": 3,
+        "sections": [
+          "Date range",
+          "Sales, fees, shipping, tax, refunds",
+          "Export CSV"
+        ]
+      },
+      {
+        "id": "P-066",
+        "route": "/admin/settings/[tab]",
+        "title_id": "Pengaturan",
+        "phase": 1,
+        "tabs": [
+          "store",
+          "shipping",
+          "payment",
+          "tax",
+          "returns",
+          "staff (phase 3)",
+          "activity-log (phase 3)"
+        ]
+      }
+    ],
+    "system": [
+      {
+        "id": "P-070",
+        "route": "not-found",
+        "title_id": "404",
+        "phase": 1,
+        "note": "Branded, playful, with search and home link."
+      },
+      {
+        "id": "P-071",
+        "route": "error",
+        "title_id": "500",
+        "phase": 1,
+        "note": "Friendly message, retry button, no technical details."
+      },
+      {
+        "id": "P-072",
+        "route": "forbidden",
+        "title_id": "403 Akses Ditolak",
+        "phase": 1
+      },
+      {
+        "id": "P-073",
+        "route": "maintenance",
+        "title_id": "Sedang Perbaikan",
+        "phase": 1,
+        "note": "Controlled by maintenance_mode setting. Admin bypass."
+      },
+      {
+        "id": "P-074",
+        "route": "payment states",
+        "title_id": "Pembayaran Gagal / Kedaluwarsa",
+        "phase": 1,
+        "note": "Rendered inside P-031 with clear next action."
+      },
+      {
+        "id": "P-075",
+        "route": "components",
+        "title_id": "Empty, Loading, Skeleton states",
+        "phase": 1,
+        "note": "Reusable components."
+      }
+    ]
+  },
+  "emails_and_notifications": {
+    "branding": "All emails use Care Care logo, brand colors, mobile-friendly layout, Indonesian copy, store contact in footer.",
+    "customer_emails": [
+      {
+        "template": "verify-email",
+        "phase": 1
+      },
+      {
+        "template": "reset-password",
+        "phase": 1
+      },
+      {
+        "template": "order-created-awaiting-payment",
+        "phase": 1,
+        "includes": "amount, payment instructions link, 15-minute deadline"
+      },
+      {
+        "template": "payment-success",
+        "phase": 1,
+        "includes": "order summary and invoice link"
+      },
+      {
+        "template": "order-expired-cancelled",
+        "phase": 1
+      },
+      {
+        "template": "order-shipped",
+        "phase": 1,
+        "includes": "courier, resi, tracking link"
+      },
+      {
+        "template": "order-completed-review-request",
+        "phase": 2
+      },
+      {
+        "template": "return-status-updates (received, approved, rejected, refunded)",
+        "phase": 2
+      },
+      {
+        "template": "welcome",
+        "phase": 2
+      }
+    ],
+    "admin_alerts": [
+      {
+        "event": "new paid order",
+        "channel": "email + admin dashboard badge",
+        "phase": 1
+      },
+      {
+        "event": "low stock",
+        "channel": "dashboard + optional email digest",
+        "phase": 1
+      },
+      {
+        "event": "payment received after expiry",
+        "channel": "email + dashboard flag",
+        "phase": 1
+      },
+      {
+        "event": "new return request",
+        "channel": "email + dashboard",
+        "phase": 2
+      }
+    ],
+    "in_app_notification_types": [
+      "ORDER_STATUS",
+      "PAYMENT",
+      "SHIPMENT",
+      "RETURN",
+      "PROMO",
+      "SYSTEM"
+    ],
+    "future_channel": "WhatsApp notifications (not in scope now)"
+  },
+  "admin_settings": {
+    "store": [
+      "store_name",
+      "logo",
+      "contact_email",
+      "contact_phone_whatsapp",
+      "address",
+      "operating_hours",
+      "social_links",
+      "timezone",
+      "maintenance_mode"
+    ],
+    "shipping": [
+      "origin address and postal code",
+      "enabled_couriers",
+      "packaging_weight_gram",
+      "min_chargeable_weight_gram",
+      "free_shipping rules",
+      "insurance_policy"
+    ],
+    "payment": [
+      "payment_window_minutes (15)",
+      "enabled_methods",
+      "fee table per method (type flat|percent, value)"
+    ],
+    "tax": [
+      "enabled",
+      "mode inclusive|exclusive",
+      "rate_percent",
+      "shipping_taxable",
+      "business_tax_id for invoices"
+    ],
+    "inventory": [
+      "low_stock_threshold (5)"
+    ],
+    "orders": [
+      "auto_complete_after_delivered_days (3)"
+    ],
+    "returns": [
+      "request_window_days (7)",
+      "reasons enabled",
+      "policy text shortcut to static page"
+    ]
+  },
+  "security": {
+    "requirements": [
+      "HTTPS everywhere, secure and httpOnly cookies, SameSite lax or strict.",
+      "Hash passwords with bcrypt or argon2.",
+      "Authorization checks on every server action and route handler. Never rely on hiding buttons.",
+      "Customers can only access their own orders, addresses, returns, and reviews (ownership checks).",
+      "Validate every input with Zod on the server. Sanitize rich text (articles, product descriptions).",
+      "Rate limit login, register, forgot password, voucher validation, checkout creation, contact form.",
+      "Bot protection on register, login, checkout, contact.",
+      "Verify all webhook signatures. Idempotent processing.",
+      "Admin routes under /admin protected by proxy.ts (Next.js 16 name for middleware) plus per-action permission checks.",
+      "Do not expose internal ids where order_number is enough. Do not leak whether an email exists on forgot password.",
+      "Secrets only in environment variables. Never commit .env.",
+      "Database backups (provider automated daily) and tested restore procedure.",
+      "Upload validation: type, size, and scan names. Serve through the image CDN.",
+      "Audit log for sensitive admin actions: price change, stock adjust, cancel, refund, settings change, staff change."
+    ]
+  },
+  "performance_and_seo": {
+    "performance": [
+      "Use Next.js Image with CDN-optimized images and defined sizes.",
+      "Static or incremental static generation for home, catalog pages, product pages, collections, articles. Revalidate on admin change.",
+      "Cart, checkout, account, admin are dynamic.",
+      "Database indexes on slug, sku, status, category_id, created_at, order_number.",
+      "Drop-day protection: atomic stock updates, rate limiting, cached read-only catalog, avoid N+1 queries.",
+      "Target Lighthouse mobile performance 85+ on home and product pages."
+    ],
+    "seo": [
+      "Clean slugs, canonical URLs, unique title and meta description per page.",
+      "Product JSON-LD structured data (name, image, price, availability, rating).",
+      "Open Graph and Twitter cards.",
+      "sitemap.xml and robots.txt (disallow /admin, /account, /checkout, /api).",
+      "Indonesian language tag on html."
+    ]
+  },
+  "accessibility_and_responsive": {
+    "target": "WCAG 2.1 AA",
+    "rules": [
+      "Color contrast at least 4.5:1 for normal text.",
+      "Visible focus states on all interactive elements.",
+      "Full keyboard navigation for menus, drawers, modals, filters.",
+      "Alt text for all product images (admin field).",
+      "Form labels and error messages linked to inputs.",
+      "Respect prefers-reduced-motion for rotated stickers, marquee, and countdown animations.",
+      "Touch targets at least 44x44px."
+    ],
+    "breakpoints": {
+      "mobile": "< 640px (design first)",
+      "tablet": "640 to 1024px",
+      "desktop": "> 1024px"
+    },
+    "mobile_notes": [
+      "Product grid 2 columns on mobile.",
+      "Filters in a bottom drawer.",
+      "Sticky add-to-bag bar on product detail.",
+      "Admin panel must be usable on tablet; mobile admin is nice to have."
+    ]
+  },
+  "legal_and_compliance": {
+    "status": "Business entity, tax status, and documents are NOT yet prepared. See open_decisions.",
+    "must_have_pages_before_launch": [
+      "Privacy Policy (compliant with UU PDP No. 27/2022)",
+      "Terms and Conditions",
+      "Return and Refund Policy",
+      "Shipping Policy",
+      "Payment information",
+      "Store identity in footer (business name, address, contact)"
+    ],
+    "app_requirements": [
+      "Consent checkbox at registration and separate consent for marketing emails.",
+      "Show total cost (items, shipping, tax, payment fee) before payment.",
+      "Customer data export and deletion request flow.",
+      "Never store payment card data.",
+      "Keep transaction records according to Indonesian bookkeeping and tax requirements (confirm retention period with an accountant)."
+    ],
+    "owner_checklist_outside_code": {
+      "entity": "Choose entity: individual, PT Perorangan, CV, or PT. Payment gateway documents and settlement bank account depend on this.",
+      "documents": [
+        "KTP",
+        "NPWP",
+        "NIB via OSS with proper KBLI",
+        "Business bank account",
+        "Deed/decree if PT or CV"
+      ],
+      "tax": [
+        "Determine PPh final UMKM obligations",
+        "Determine if and when PKP/PPN applies",
+        "Invoice format",
+        "Basic bookkeeping"
+      ],
+      "brand": [
+        "Check name 'Care Care' availability (domain, Instagram, TikTok, marketplaces)",
+        "Check trademark in DJKI database and register the mark and logo",
+        "Buy domain and set up business email",
+        "Prepare final SVG logo variants"
+      ],
+      "disclaimer": "Planner is not a lawyer or tax advisor. Confirm all legal and tax points with professionals."
+    }
+  },
+  "testing": {
+    "critical_flows_e2e": [
+      "Register, verify email, login, logout.",
+      "Add to cart, checkout, pay in sandbox, order becomes PROCESSING.",
+      "Order not paid in 15 minutes becomes CANCELLED and stock returns.",
+      "Two buyers race for last item: only one succeeds, the other gets a clear message.",
+      "Duplicate payment webhook does not double-process.",
+      "Late payment after expiry is flagged, not auto-fulfilled.",
+      "Admin creates shipment and customer sees resi and tracking updates.",
+      "Free shipping rule and voucher change totals correctly.",
+      "Totals identical across cart, checkout, payment page, email, and invoice."
+    ],
+    "unit_tests": [
+      "calculateOrderTotal (many cases incl. rounding)",
+      "Order status transition guard",
+      "Stock reservation and release",
+      "Voucher validation",
+      "Free shipping rule evaluation",
+      "Webhook signature verification"
+    ],
+    "environments": [
+      "local development against Neon dev branch",
+      "staging/preview with Midtrans and Biteship sandbox and Neon dev or test branch",
+      "production against Neon main branch"
+    ]
+  },
+  "roadmap": {
+    "phase_0_preparation": {
+      "goal": "Decisions and accounts, parallel with design.",
+      "tasks": [
+        "Finalize SVG logo variants and confirm brand colors",
+        "Check name and trademark, buy domain",
+        "Decide entity, prepare NPWP and NIB",
+        "Register Midtrans and Biteship (use sandbox first)",
+        "Write policy pages",
+        "Answer open_decisions",
+        "Prepare product photos and sample catalog"
+      ]
+    },
+    "phase_1_mvp": {
+      "goal": "A store that can sell and ship.",
+      "pages": [
+        "P-001",
+        "P-002",
+        "P-003",
+        "P-004",
+        "P-009",
+        "P-011",
+        "P-012",
+        "P-013",
+        "P-014",
+        "P-015",
+        "P-020",
+        "P-021",
+        "P-022",
+        "P-023",
+        "P-024",
+        "P-025",
+        "P-030",
+        "P-031",
+        "P-032",
+        "P-034",
+        "P-035",
+        "P-036",
+        "P-037",
+        "P-038",
+        "P-050",
+        "P-051",
+        "P-052",
+        "P-053",
+        "P-054",
+        "P-055",
+        "P-064",
+        "P-066",
+        "P-070",
+        "P-071",
+        "P-072",
+        "P-073",
+        "P-074",
+        "P-075"
+      ],
+      "features": [
+        "F-001",
+        "F-002",
+        "F-003",
+        "F-004",
+        "F-005",
+        "F-011",
+        "F-020",
+        "F-021",
+        "F-022",
+        "F-023",
+        "F-030",
+        "F-031",
+        "F-032",
+        "F-040",
+        "F-041",
+        "F-042",
+        "F-043",
+        "F-051",
+        "F-060",
+        "F-061",
+        "F-062"
+      ]
+    },
+    "phase_2_growth": {
+      "pages": [
+        "P-005",
+        "P-006",
+        "P-010",
+        "P-033",
+        "P-039",
+        "P-040",
+        "P-041",
+        "P-042",
+        "P-043",
+        "P-056",
+        "P-057",
+        "P-058",
+        "P-059",
+        "P-060",
+        "P-061"
+      ],
+      "features": [
+        "F-006",
+        "F-007",
+        "F-008",
+        "F-009",
+        "F-024",
+        "F-025",
+        "F-026",
+        "F-044",
+        "F-045",
+        "F-046",
+        "F-047",
+        "F-048"
+      ]
+    },
+    "phase_3_polish": {
+      "pages": [
+        "P-007",
+        "P-008",
+        "P-062",
+        "P-063",
+        "P-065"
+      ],
+      "features": [
+        "F-010",
+        "F-049",
+        "F-050",
+        "F-052",
+        "F-063"
+      ],
+      "also": [
+        "Staff roles and activity log UI",
+        "Admin 2FA",
+        "Performance and SEO tuning",
+        "Optional English language"
+      ]
+    },
+    "recommended_build_order": [
+      "1. Design system and tokens (colors, type, borders, shadows, components)",
+      "2. Database schema and seed data (including admin user)",
+      "3. Auth and roles",
+      "4. Admin: categories, products and variants, stock service",
+      "5. Storefront: home, catalog, product detail, cart",
+      "6. Pricing calculator with unit tests",
+      "7. Address book and Biteship rates",
+      "8. Checkout, stock reservation, Midtrans payment and webhook",
+      "9. Order management, shipment creation, tracking webhook",
+      "10. Emails, cron jobs, system pages",
+      "11. End-to-end tests in sandbox, soft launch"
+    ]
+  },
+  "open_decisions": [
+    {
+      "id": "D-01",
+      "question": "Who builds and maintains the site (solo, team, hired developer)?",
+      "impact": "Final stack and process.",
+      "default_until_decided": "Stack as specified."
+    },
+    {
+      "id": "D-02",
+      "question": "Business entity type (individual, PT Perorangan, CV, PT)?",
+      "impact": "Payment gateway account, available methods, tax.",
+      "default_until_decided": "Develop with sandbox only."
+    },
+    {
+      "id": "D-03",
+      "question": "Is guest checkout allowed?",
+      "impact": "Checkout and account flow.",
+      "default_until_decided": "No, login required."
+    },
+    {
+      "id": "D-04",
+      "question": "Which couriers and services to enable?",
+      "impact": "Shipping settings.",
+      "default_until_decided": "All couriers Biteship returns, owner can disable later."
+    },
+    {
+      "id": "D-05",
+      "question": "Free shipping rule (minimum purchase, subsidy cap)?",
+      "impact": "Shipping logic.",
+      "default_until_decided": "Disabled."
+    },
+    {
+      "id": "D-06",
+      "question": "One warehouse or several origins?",
+      "impact": "Rates and order fulfillment.",
+      "default_until_decided": "One origin."
+    },
+    {
+      "id": "D-07",
+      "question": "Shipping insurance: optional, mandatory, or by value threshold?",
+      "impact": "Checkout total.",
+      "default_until_decided": "Optional, off by default."
+    },
+    {
+      "id": "D-08",
+      "question": "Are prices tax-inclusive or tax-exclusive, and is the store PKP?",
+      "impact": "Pricing calculation and invoices.",
+      "default_until_decided": "Tax disabled."
+    },
+    {
+      "id": "D-09",
+      "question": "Real payment fee per method to pass to buyers (flat or percent)?",
+      "impact": "Fee table.",
+      "default_until_decided": "Fee table empty, set before launch."
+    },
+    {
+      "id": "D-10",
+      "question": "Will the store run scheduled drops from launch?",
+      "impact": "Phase of drops feature and infrastructure.",
+      "default_until_decided": "Drops in phase 2."
+    },
+    {
+      "id": "D-11",
+      "question": "Final return policy values (window, who pays return shipping, exchange rules)?",
+      "impact": "Return flow and policy page.",
+      "default_until_decided": "Defaults in business_rules.returns_and_refunds."
+    },
+    {
+      "id": "D-12",
+      "question": "Final brand colors, fonts, and tagline; confirm hex values from logo file.",
+      "impact": "Design system.",
+      "default_until_decided": "Values in brand section."
+    },
+    {
+      "id": "D-13",
+      "question": "Domain name and business email.",
+      "impact": "Email sending, SEO, Midtrans application.",
+      "default_until_decided": "Use preview domain."
+    },
+    {
+      "id": "D-14",
+      "question": "Who provides product photos, model shoots, and copywriting?",
+      "impact": "Content readiness for launch.",
+      "default_until_decided": "Placeholder images in development only."
+    },
+    {
+      "id": "D-15",
+      "question": "Who handles daily operations after launch (packing, resi, customer chat, complaints)?",
+      "impact": "Admin permissions and workflow.",
+      "default_until_decided": "Owner only."
+    },
+    {
+      "id": "D-16",
+      "question": "Payment gateway final choice: Midtrans or Xendit?",
+      "impact": "Integration code.",
+      "default_until_decided": "Midtrans."
+    },
+    {
+      "id": "D-17",
+      "question": "Customer service channel (WhatsApp, email, live chat)?",
+      "impact": "Contact page and support flow.",
+      "default_until_decided": "Email plus WhatsApp link."
+    },
+    {
+      "id": "D-18",
+      "question": "Open design decisions DD-01 to DD-10 in docs/design/DESIGN.md section 15.",
+      "impact": "Visual identity and design system.",
+      "default_until_decided": "Defaults listed in DESIGN.md section 15."
+    }
+  ],
+  "ai_coder_rules": [
+    "Language: TypeScript strict. No 'any' unless justified with a comment.",
+    "All money is integer IDR. Never use floating point for money.",
+    "All price, stock, voucher, shipping, tax, and fee calculations happen on the server using lib/pricing and services. Never trust client-supplied totals.",
+    "Stock changes only through stockService inside a database transaction with an atomic conditional update. Always create a StockMovement.",
+    "Order status changes only through orderService.transition which enforces allowed_transitions and writes OrderStatusHistory.",
+    "Payment and shipping state changes come only from verified, idempotent webhooks (plus status API verification for payments).",
+    "Use Zod schemas shared by form and server validation.",
+    "Check authentication and authorization (role, permission, ownership) in every server action and route handler.",
+    "UI copy is Indonesian. Code, comments, commits, and identifiers are English.",
+    "Every data-driven view needs loading (skeleton), empty, and error states.",
+    "Never log secrets, tokens, or full payment payloads containing personal data in client logs.",
+    "Write unit tests for pricing, stock, voucher, and status transitions before wiring them into UI.",
+    "Keep functions small, name things by domain terms used in this file (Order, Variant, Reservation, Shipment, ReturnRequest).",
+    "When something is unclear or marked open, stop and ask the owner instead of guessing. Record the answer by updating this file.",
+    "Update this spec file in the same commit whenever behavior changes.",
+    "Follow docs/design/DESIGN.md for every visual decision and run its review checklist (section 14) before finishing any UI task.",
+    "Never use default Tailwind colors, rounded-* (except rounded-full on stickers and pills), shadow-sm/md/lg/xl, gradients, or backdrop-blur. Use design tokens and messages/id.json only.",
+    "Do not invent brand copy or a tagline. Use messages/id.json and ask the owner (DESIGN.md DD-05)."
+  ]
+}
