@@ -1,4 +1,4 @@
-/**
+/*  *//**
  * Joins conditional class names without external dependencies.
  */
 export function cn(
