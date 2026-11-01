@@ -67,8 +67,8 @@ interface StoreContextValue {
 
 const StoreContext = createContext<StoreContextValue | null>(null);
 
-const CART_STORAGE_KEY = "carecare_guest_cart_v1";
-const WISHLIST_STORAGE_KEY = "carecare_wishlist_v1";
+const CART_STORAGE_KEY = "mg_guest_cart_v1";
+const WISHLIST_STORAGE_KEY = "mg_wishlist_v1";
 
 /**
  * Lightweight localStorage external store helper compatible with React 19 `useSyncExternalStore`

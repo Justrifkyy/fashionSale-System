@@ -141,7 +141,7 @@ export function Header() {
       <Drawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        title="Menu Care Care"
+        title="Menu Mandiri Global"
         side="bottom"
       >
         <div className="flex flex-col gap-3 py-2">

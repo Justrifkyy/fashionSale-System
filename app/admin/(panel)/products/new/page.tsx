@@ -105,7 +105,7 @@ export default function AdminNewProductPage() {
                       <input
                         type="text"
                         aria-label={`SKU ukuran ${size}`}
-                        defaultValue={`CC-NEW-${size}`}
+                        defaultValue={`MG-NEW-${size}`}
                         className="h-10 w-36 border-base bg-surface px-2.5 tabular-nums"
                       />
                     </td>

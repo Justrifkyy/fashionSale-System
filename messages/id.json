@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Care Care - Pakaian sehari-hari dari Makassar",
-    "description": "Care Care berarti pakaian dalam bahasa Makassar. Katalog pakaian dan aksesori dengan stok akurat dan pengiriman ke seluruh Indonesia."
+    "title": "Mandiri Global - Pakaian sehari-hari dari Makassar",
+    "description": "Mandiri Global (MG). Katalog pakaian dan aksesori berkualitas dengan stok akurat dan pengiriman ke seluruh Indonesia."
   },
   "common": {
-    "brand": "Care Care",
-    "wordmark": "CARE CARE",
+    "brand": "Mandiri Global",
+    "wordmark": "MANDIRI GLOBAL",
     "currencyPrefix": "Rp",
     "close": "Tutup",
     "cancel": "Batal",
@@ -57,8 +57,8 @@
     "RETURN": "Retur"
   },
   "home": {
-    "heroTitle": "CARE-CARE",
-    "heroMeaning": "pakaian dalam bahasa Makassar.",
+    "heroTitle": "MANDIRI GLOBAL",
+    "heroMeaning": "gaya pakaian harian berkarakter mandiri & berstandar global.",
     "heroDropLabel": "Koleksi terbaru:",
     "heroDropName": "Rilisan Pesisir Losari",
     "heroDropSummary": "Potongan longgar berbahan katun tebal dan kanvas tenun yang nyaman dipakai di cuaca tropis.",
@@ -68,10 +68,10 @@
     "categoriesViewAll": "Lihat semua produk",
     "latestHeading": "Produk terbaru",
     "latestViewAll": "Buka katalog lengkap",
-    "storyHeading": "Tentang nama Care Care",
-    "storyBody": "Dalam bahasa Makassar, care-care berarti pakaian. Kami memulai toko ini dari satu gagasan sederhana: membuat pakaian harian dengan kain yang jujur, jahitan rapi, dan ukuran yang jelas tanpa biaya tersembunyi saat kamu membayar.",
+    "storyHeading": "Tentang Mandiri Global",
+    "storyBody": "Mandiri Global (MG) lahir dari satu gagasan sederhana: membuat pakaian harian dengan kain yang jujur, jahitan rapi, dan ukuran yang jelas tanpa biaya tersembunyi saat kamu membayar.",
     "storyLink": "Baca cerita lengkap kami",
-    "storyPhotoAlt": "Detail tenunan kain katun tebal Care Care di ruang kerja Makassar",
+    "storyPhotoAlt": "Detail tenunan kain katun tebal Mandiri Global di ruang kerja Makassar",
     "swatchPoplin": "Poplin 185 gsm",
     "swatchTwill": "Twill 290 gsm",
     "originCity": "Makassar, Sulawesi Selatan"
@@ -208,7 +208,7 @@
     "instructionsHeading": "Cara membayar",
     "instruction1": "Buka aplikasi mobile banking atau ATM sesuai bank yang kamu pilih.",
     "instruction2": "Pilih menu pembayaran Virtual Account dan tempel nomor di atas.",
-    "instruction3": "Pastikan nominal tagihan sama persis dengan total pembayaran Care Care.",
+    "instruction3": "Pastikan nominal tagihan sama persis dengan total pembayaran Mandiri Global.",
     "simulatePaid": "Simulasikan pembayaran berhasil (mode pratinjau)",
     "viewOrderDetail": "Lihat detail pesanan",
     "expiredTitle": "Waktu pembayaran habis.",
@@ -226,7 +226,7 @@
   },
   "checkoutSuccess": {
     "heading": "Pesanan berhasil dibayar",
-    "body": "Terima kasih, pembayaranmu sudah kami terima. Pesananmu sekarang sedang disiapkan oleh tim Care Care di Makassar.",
+    "body": "Terima kasih, pembayaranmu sudah kami terima. Pesananmu sekarang sedang disiapkan oleh tim Mandiri Global di Makassar.",
     "trackAction": "Lihat detail pesanan",
     "continueShopping": "Kembali ke beranda"
   },
@@ -234,17 +234,17 @@
     "loginHeading": "Masuk",
     "loginSub": "Masuk untuk melanjutkan checkout, melacak pesanan, dan menyimpan wishlist.",
     "registerHeading": "Daftar akun",
-    "registerSub": "Buat akun pelanggan Care Care untuk mulai berbelanja.",
+    "registerSub": "Buat akun pelanggan Mandiri Global untuk mulai berbelanja.",
     "forgotHeading": "Lupa password",
     "forgotSub": "Masukkan email akunmu. Jika terdaftar, kami akan mengirimkan link untuk mengatur ulang password.",
     "adminLoginHeading": "Masuk admin",
-    "adminLoginSub": "Halaman khusus pengelola toko Care Care.",
+    "adminLoginSub": "Halaman khusus pengelola toko Mandiri Global.",
     "nameLabel": "Nama lengkap",
     "emailLabel": "Alamat email",
     "phoneLabel": "Nomor telepon atau WhatsApp",
     "passwordLabel": "Password",
     "passwordHelper": "Minimal 8 karakter.",
-    "consentLabel": "Saya menyetujui Syarat dan Ketentuan serta Kebijakan Privasi Care Care (sesuai UU PDP).",
+    "consentLabel": "Saya menyetujui Syarat dan Ketentuan serta Kebijakan Privasi Mandiri Global (sesuai UU PDP).",
     "loginCta": "Masuk sekarang",
     "registerCta": "Buat akun",
     "forgotCta": "Kirim link reset password",
@@ -280,8 +280,8 @@
     "addNewAddress": "Tambah alamat baru"
   },
   "info": {
-    "aboutHeading": "Tentang Care Care",
-    "aboutIntro": "Care Care diambil dari kosakata bahasa Makassar yang berarti pakaian. Kami merancang pakaian esensial dengan konstruksi kuat, garis potongan rapi, dan informasi produk yang transparan.",
+    "aboutHeading": "Tentang Mandiri Global",
+    "aboutIntro": "Mandiri Global (MG) hadir membawa visi kemandirian lokal berdaya saing global. Kami merancang pakaian esensial dengan konstruksi kuat, garis potongan rapi, dan informasi produk yang transparan.",
     "aboutValuesHeading": "Prinsip kami",
     "aboutValue1Title": "Kain dan ukuran yang jujur",
     "aboutValue1Body": "Setiap varian mencantumkan berat gramasi dan panduan ukuran dalam sentimeter agar kamu tidak menebak-nebak.",
@@ -292,13 +292,13 @@
     "faqHeading": "Pertanyaan umum",
     "contactHeading": "Hubungi kami",
     "contactBody": "Ada pertanyaan soal ukuran, pengiriman, atau pesananmu? Kirim pesan atau hubungi kami pada jam operasional toko.",
-    "contactMessageLabel": "Pesan untuk tim Care Care",
+    "contactMessageLabel": "Pesan untuk tim Mandiri Global",
     "contactSendCta": "Kirim pesan",
-    "contactSentToast": "Pesan terkirim ke tim Care Care",
+    "contactSentToast": "Pesan terkirim ke tim Mandiri Global",
     "storeHoursTitle": "Informasi toko",
     "storeAddress": "Jl. Somba Opu, Kecamatan Ujung Pandang, Makassar, Sulawesi Selatan 90111",
     "storeHours": "Senin sampai Sabtu, pukul 09.00 sampai 18.00 WITA",
-    "storeEmail": "halo@carecare.id",
+    "storeEmail": "halo@mandiriglobal.id",
     "storeWhatsapp": "+62 812-4000-9011",
     "labelAddress": "Alamat",
     "labelHours": "Jam operasional",
@@ -313,27 +313,27 @@
     "policyUpdatedLabel": "Terakhir diperbarui: 28 Oktober 2026",
     "policies": {
       "privacy": [
-        "Care Care menghormati dan melindungi data pribadi pelanggan sesuai Undang-Undang Pelindungan Data Pribadi (UU PDP No. 27 Tahun 2022).",
+        "Mandiri Global menghormati dan melindungi data pribadi pelanggan sesuai Undang-Undang Pelindungan Data Pribadi (UU PDP No. 27 Tahun 2022).",
         "Data nama, email, nomor telepon, dan alamat pengiriman hanya digunakan untuk memproses pesanan, menerbitkan resi kurir, serta mengirimkan pemberitahuan status transaksi.",
         "Kami tidak pernah menyimpan data kartu pembayaran dan kamu dapat mengajukan ekspor maupun penghapusan akun melalui halaman Profil."
       ],
       "terms": [
-        "Seluruh harga produk di Care Care tercantum dalam mata uang Rupiah (IDR). Total pembayaran mencakup harga barang, ongkos kirim, dan biaya layanan metode pembayaran yang dipilih.",
+        "Seluruh harga produk di Mandiri Global tercantum dalam mata uang Rupiah (IDR). Total pembayaran mencakup harga barang, ongkos kirim, dan biaya layanan metode pembayaran yang dipilih.",
         "Pesanan yang dibuat memiliki batas waktu pembayaran 15 menit. Apabila pembayaran belum terkonfirmasi dalam batas waktu tersebut, pesanan otomatis dibatalkan dan reservasi stok dilepas kembali."
       ],
       "returns": [
         "Pengajuan retur berlaku maksimal 7 hari kalender sejak pesanan berstatus diterima berdasarkan pelacakan kurir.",
         "Barang harus dalam keadaan belum dipakai, belum dicuci, serta label dan kemasan asli masih utuh. Produk dengan penanda final sale tidak dapat diretur.",
-        "Untuk kesalahan pengiriman atau cacat produksi, wajib menyertakan foto atau video pembukaan paket dan ongkos kirim ditanggung Care Care. Untuk penukaran ukuran, ongkos kirim ditanggung pembeli."
+        "Untuk kesalahan pengiriman atau cacat produksi, wajib menyertakan foto atau video pembukaan paket dan ongkos kirim ditanggung Mandiri Global. Untuk penukaran ukuran, ongkos kirim ditanggung pembeli."
       ],
       "shipping": [
-        "Seluruh pengiriman berangkat dari gudang Care Care di Makassar, Sulawesi Selatan, menjangkau seluruh Indonesia menggunakan layanan kurir resmi.",
+        "Seluruh pengiriman berangkat dari gudang Mandiri Global di Makassar, Sulawesi Selatan, menjangkau seluruh Indonesia menggunakan layanan kurir resmi.",
         "Pesanan yang pembayarannya terkonfirmasi pada hari kerja sebelum pukul 15.00 WITA diproses untuk diserahkan ke kurir pada hari yang sama atau hari kerja berikutnya."
       ]
     }
   },
   "admin": {
-    "panelTitle": "Admin Care Care",
+    "panelTitle": "Admin Mandiri Global",
     "navDashboard": "Dashboard",
     "navOrders": "Pesanan",
     "navProducts": "Produk",
@@ -412,7 +412,7 @@
     "settingLowStockThreshold": "Ambang peringatan stok menipis"
   },
   "footer": {
-    "description": "Care Care berarti pakaian dalam bahasa Makassar. Pengiriman dari Makassar ke seluruh wilayah Indonesia.",
+    "description": "Mandiri Global (MG) menghadirkan pakaian berkualitas untuk kebutuhan harian. Pengiriman dari Makassar ke seluruh wilayah Indonesia.",
     "shopHeading": "Belanja",
     "helpHeading": "Bantuan",
     "legalHeading": "Kebijakan",
@@ -426,7 +426,7 @@
     "linkTerms": "Syarat dan ketentuan",
     "linkReturns": "Kebijakan retur dan refund",
     "linkShipping": "Kebijakan pengiriman",
-    "copyright": "Hak cipta 2026 Care Care Makassar. Seluruh harga dalam Rupiah."
+    "copyright": "Hak cipta 2026 Mandiri Global Makassar. Seluruh harga dalam Rupiah."
   },
   "system": {
     "notFoundHeading": "Halaman ini tidak ada",

@@ -14,7 +14,7 @@ export interface PoliceTapeProps {
 
 const DEFAULT_TAPE_ITEMS = [
   "⚠️ POLICE LINE DO NOT CROSS",
-  "CARE CARE MAKASSAR",
+  "MANDIRI GLOBAL MAKASSAR",
   "DROP 01 // EDISI PESISIR",
   "KATUN TENUN 100% ASLI",
   "JANGAN DILINTASI // STOK TERBATAS",
@@ -61,7 +61,7 @@ export function PoliceTape({
   return (
     <div
       role="marquee"
-      aria-label="Peringatan rilisan Care Care"
+      aria-label="Peringatan rilisan Mandiri Global"
       style={transformStyle}
       className={cn(
         "relative w-full overflow-hidden select-none",

@@ -44,7 +44,7 @@ const MATERIAL_SPECIMENS: MaterialSpecimen[] = [
     composition: "100% Kapas Ring-Spun",
     weaveType: "Single Jersey Heavyweight",
     description:
-      "Material andalan Care Care: katun berbobot padat yang tidak menerawang. Tetap berdiri tegak membentuk siluet boxy maskulin tanpa membuat gerah.",
+      "Material andalan Mandiri Global: katun berbobot padat yang tidak menerawang. Tetap berdiri tegak membentuk siluet boxy maskulin tanpa membuat gerah.",
     features: [
       "Rib leher 30mm dengan spandex ganda anti-melar",
       "Proses pre-shrunk dengan tingkat susut di bawah 1.2%",
@@ -87,13 +87,13 @@ const MATERIAL_SPECIMENS: MaterialSpecimen[] = [
 
 const PHILOSOPHY_PILLARS = [
   {
-    id: "carecare",
+    id: "mandiriglobal",
     num: "01",
-    tag: "ETIMOLOGI LINGUISTIK",
-    title: "KATA: 'CARE CARE'",
-    subtitle: "Pakaian dalam Bahasa Makassar",
-    body: "Dalam percakapan harian masyarakat Makassar, 'care-care' adalah sebutan akrab untuk pakaian, kain, dan busana yang kita kenakan ke mana pun kaki melangkah. Nama ini kami pilih sebagai janji setia: kami tidak menjual tren sesaat yang cepat usang, melainkan menciptakan pakaian harian yang jujur, kokoh, dan menemani hidup nyata pemakainya.",
-    quote: "“Care-care-nu bajik dudu!” (Pakaianmu bagus sekali!)",
+    tag: "ETOS & IDENTITAS",
+    title: "NAMA: 'MANDIRI GLOBAL' (MG)",
+    subtitle: "Kemandirian Lokal Berdaya Saing Global",
+    body: "Nama Mandiri Global (MG) lahir dari keyakinan bahwa karya anak bangsa mampu berdiri mandiri dan bersaing di kancah global. Berakar dari etos kerja keras pesisir Makassar, nama ini menjadi janji setia: menciptakan pakaian harian yang jujur, kokoh, dan berkarakter untuk menemani langkah hidup setiap pemakainya.",
+    quote: "“Kemandirian lokal, standar kualitas garmen global.”",
   },
   {
     id: "kotak",
@@ -117,7 +117,7 @@ const PHILOSOPHY_PILLARS = [
 
 export function AboutInteractiveExperience() {
   const [activeMaterialId, setActiveMaterialId] = useState<string>("heavy-tee");
-  const [activePillarId, setActivePillarId] = useState<string>("carecare");
+  const [activePillarId, setActivePillarId] = useState<string>("mandiriglobal");
 
   const currentMaterial =
     MATERIAL_SPECIMENS.find((m) => m.id === activeMaterialId) ||
@@ -140,7 +140,7 @@ export function AboutInteractiveExperience() {
                 PONDASI KREATIF // TIGA PILAR
               </span>
             </div>
-            <h2 className="type-h2 text-ink">TRILOGI FILOSOFI CARE CARE</h2>
+            <h2 className="type-h2 text-ink">TRILOGI FILOSOFI MANDIRI GLOBAL</h2>
             <p className="type-small text-muted max-w-[65ch]">
               Tiga gagasan yang membentuk seluruh DNA brand kami: dari nama, bentuk visual,
               hingga cara kamu berinteraksi dengan produk kami.
@@ -239,7 +239,7 @@ export function AboutInteractiveExperience() {
                   ARTIFACT 0{currentPillar.num}
                 </span>
                 <div className="h-16 w-16 bg-ink text-gold border-2 border-ink flex items-center justify-center font-display font-black text-2xl mb-2 shadow-hard-sm">
-                  CC
+                  MG
                 </div>
                 <span className="font-mono text-[10px] font-bold text-ink uppercase tracking-wider">
                   {currentPillar.title}
@@ -420,7 +420,7 @@ export function AboutInteractiveExperience() {
 
             <p className="type-body text-surface/80 leading-relaxed">
               Di Pelabuhan Paotere, perahu-perahu pinisi bersandar membawa kayu, rempah, dan cerita
-              pelaut tangguh. Di tepi dermaga itulah kami mendirikan meja kerja Care Care. Udara pesisir
+              pelaut tangguh. Di tepi dermaga itulah kami mendirikan meja kerja Mandiri Global. Udara pesisir
               yang lembap dan terik khatulistiwa menjadi laboratorium alami kami: jika pakaian kami
               nyaman dipakai berjalan di bawah terik matahari Paotere dan Losari, maka ia akan nyaman
               dikenakan di sudut mana pun di nusantara.
@@ -453,7 +453,7 @@ export function AboutInteractiveExperience() {
               <div className="relative aspect-[4/3] overflow-hidden border-2 border-surface bg-photo shadow-hard">
                 <Image
                   src={DEMO_IMAGES.rackNeutral}
-                  alt="Ruang Kerja Atelier Care Care Paotere Makassar"
+                  alt="Ruang Kerja Atelier Mandiri Global Paotere Makassar"
                   fill
                   sizes="(max-width: 1024px) 100vw, 450px"
                   className="object-cover"

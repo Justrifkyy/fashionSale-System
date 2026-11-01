@@ -415,7 +415,7 @@ export default function CheckoutPage() {
           <Button
             variant="primary"
             fullWidth
-            onClick={() => router.push("/checkout/payment/CC-261030-W9T1")}
+            onClick={() => router.push("/checkout/payment/MG-261030-W9T1")}
           >
             {idMessages.checkout.payNowCta}
           </Button>

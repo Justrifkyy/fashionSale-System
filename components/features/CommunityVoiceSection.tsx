@@ -97,7 +97,7 @@ export function CommunityVoiceSection() {
           <h2 className="type-h2 text-ink">SUARA SKENA MAKASSAR</h2>
           <p className="type-small text-muted max-w-[65ch]">
             Dokumentasi suara dan ulasan langsung dari pembeli terverifikasi yang mengenakan
-            koleksi Care Care di sekeliling sudut kota Makassar.
+            koleksi Mandiri Global di sekeliling sudut kota Makassar.
           </p>
         </div>
 

@@ -18,11 +18,11 @@ interface CareCareLogoProps {
   className?: string;
 }
 
-const SESSION_LOGO_KEY = "carecare_hero_logo_assembled_v1";
+const SESSION_LOGO_KEY = "mg_hero_logo_assembled_v1";
 
 /**
- * Authentic Care Care Interlocking Monogram Logo (Frame 1.svg / Frame 1.png):
- * - Interlocking geometric letter C monogram with folded-paper shading joint
+ * Authentic Mandiri Global (MG) Interlocking Monogram Logo (Frame 1.svg / Frame 1.png):
+ * - Interlocking geometric monogram with folded-paper shading joint
  * - Terracotta (#B8523C) & Ink Navy (#2D2C56) branding blocks
  * - Beveled 45-degree fold shadow joint (#A6432E)
  * - Inner shadow filter on joint

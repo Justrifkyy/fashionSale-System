@@ -34,7 +34,7 @@ export default function AboutPage() {
               </p>
 
               <p className="type-body text-muted max-w-[65ch] leading-relaxed">
-                Kami memulai Care Care dari satu kegelisahan sederhana di pesisir Makassar:
+                Kami memulai Mandiri Global dari satu kegelisahan sederhana di pesisir Makassar:
                 sulitnya menemukan pakaian harian dengan bahan yang benar-benar padat, tidak panas,
                 jahitan yang tidak rapuh setelah dicuci berkali-kali, dan harga yang transparan
                 tanpa tipu-daya.
@@ -82,7 +82,7 @@ export default function AboutPage() {
                   <div className="absolute bottom-3 left-3 right-3 border border-ink bg-surface/95 backdrop-blur-xs p-3 text-ink flex items-center justify-between">
                     <div>
                       <p className="text-xs font-black uppercase font-display">
-                        ATELIER CARE CARE
+                        ATELIER MANDIRI GLOBAL
                       </p>
                       <p className="text-[10px] font-mono text-muted">
                         PELABUHAN PAOTERE, MAKASSAR
@@ -113,14 +113,14 @@ export default function AboutPage() {
                       fontFamily="monospace"
                     >
                       <textPath href="#about-seal-path" startOffset="0%">
-                        ★ CARE CARE MAKASSAR ★ KOTAK & LIPATAN ★ 2026
+                        ★ MANDIRI GLOBAL MAKASSAR ★ KOTAK & LIPATAN ★ 2026
                       </textPath>
                     </text>
                   </svg>
                   
                   {/* Center Emblem */}
                   <div className="absolute inset-0 m-auto h-10 w-10 bg-gold border-2 border-ink flex items-center justify-center shadow-hard-sm">
-                    <span className="font-display font-black text-sm text-ink">CC</span>
+                    <span className="font-display font-black text-sm text-ink">MG</span>
                   </div>
                 </div>
               </div>
@@ -138,10 +138,10 @@ export default function AboutPage() {
           speed="normal"
           separatorIcon="star"
           items={[
-            "CARE CARE MAKASSAR",
+            "MANDIRI GLOBAL MAKASSAR",
             "DOKUMENTASI RESMI BRAND",
             "100% KATUN TENUN ASLI",
-            "ETIMOLOGI KATA CARE CARE",
+            "FILOSOFI MANDIRI GLOBAL",
             "FILOSOFI KOTAK DAN LIPATAN",
             "PELABUHAN PAOTERE // EST. 2026",
             "STANDAR GARMEN INTERNASIONAL",

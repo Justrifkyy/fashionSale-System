@@ -28,7 +28,7 @@ export default function HomePage() {
           speed="normal"
           separatorIcon="star"
           items={[
-            "CARE CARE MAKASSAR",
+            "MANDIRI GLOBAL MAKASSAR",
             "DROP 01 // EDISI PESISIR",
             "235 GSM HEAVYWEIGHT TEE",
             "100% KATUN TENUN ASLI",
@@ -80,7 +80,7 @@ export default function HomePage() {
         <EditorialHotspotSection />
       </section>
 
-      {/* 7. TENTANG NAMA CARE CARE (Etymology Dial & Cultural Swatch Archive) */}
+      {/* 7. TENTANG IDENTITAS MANDIRI GLOBAL (Etymology Dial & Cultural Swatch Archive) */}
       <section className="border-b-base border-ink bg-surface">
         <div className="mx-auto max-w-[1360px] px-4 py-12 sm:px-6 lg:px-10 lg:py-16">
           <HeritagePhilosophySection />

@@ -12,7 +12,7 @@ export interface StreetwearTickerProps {
 }
 
 const DEFAULT_TICKER_ITEMS = [
-  "CARE CARE MAKASSAR",
+  "MANDIRI GLOBAL MAKASSAR",
   "DROP 01 // EDISI PESISIR",
   "235 GSM HEAVYWEIGHT TEE",
   "100% KATUN TENUN ASLI",
@@ -92,7 +92,7 @@ export function StreetwearTicker({
   return (
     <div
       role="marquee"
-      aria-label="Pengumuman koleksi Care Care Makassar"
+      aria-label="Pengumuman koleksi Mandiri Global Makassar"
       className={cn(
         "relative w-full overflow-hidden select-none py-2.5 sm:py-3",
         variantStyles,

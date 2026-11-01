@@ -22,7 +22,7 @@ interface HotspotItem {
 const LOOK_HOTSPOTS: HotspotItem[] = [
   {
     id: "spot-1",
-    name: "Topi Kanvas 5-Panel CC",
+    name: "Topi Kanvas 5-Panel MG",
     category: "AKSESORI",
     price: "Rp 120.000",
     fabric: "Heavy Cotton Canvas 320 GSM",
@@ -166,7 +166,7 @@ export function EditorialHotspotSection() {
             <div className="relative aspect-[4/5] overflow-hidden border-strong border-surface bg-photo shadow-hard">
               <Image
                 src={DEMO_IMAGES.editorialSkenaCasual}
-                alt="Editorial Skena Streetwear Makassar Care Care"
+                alt="Editorial Skena Streetwear Makassar Mandiri Global"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 550px"

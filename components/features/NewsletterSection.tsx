@@ -85,7 +85,7 @@ export function NewsletterSection() {
               </div>
               <div className="flex items-center justify-between text-[11px] font-mono text-muted pt-1">
                 <span>*TANPA SPAM • UNUBSCRIBE KAPAN SAJA</span>
-                <span>CC-MKS-SUB</span>
+                <span>MG-MKS-SUB</span>
               </div>
             </form>
           )}

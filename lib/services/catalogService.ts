@@ -24,7 +24,7 @@ const SEED_CATEGORIES: Category[] = [
     isActive: true,
     accentBlock: "ink",
     imageUrl: DEMO_IMAGES.shirtDenimHanger,
-    imageAlt: "Kategori Kemeja Tenun Care Care",
+    imageAlt: "Kategori Kemeja Tenun Mandiri Global",
   },
   {
     id: "cat-kaos",
@@ -35,7 +35,7 @@ const SEED_CATEGORIES: Category[] = [
     isActive: true,
     accentBlock: "brick",
     imageUrl: DEMO_IMAGES.teeBlackModel,
-    imageAlt: "Kategori Kaos Heavyweight Care Care",
+    imageAlt: "Kategori Kaos Heavyweight Mandiri Global",
   },
   {
     id: "cat-celana",
@@ -46,7 +46,7 @@ const SEED_CATEGORIES: Category[] = [
     isActive: true,
     accentBlock: "photo",
     imageUrl: DEMO_IMAGES.chinoKhakiModel,
-    imageAlt: "Kategori Celana Chino & Twill Care Care",
+    imageAlt: "Kategori Celana Chino & Twill Mandiri Global",
   },
   {
     id: "cat-aksesori",
@@ -57,7 +57,7 @@ const SEED_CATEGORIES: Category[] = [
     isActive: true,
     accentBlock: "brick-deep",
     imageUrl: DEMO_IMAGES.capWhite,
-    imageAlt: "Kategori Aksesori Topi & Tas Care Care",
+    imageAlt: "Kategori Aksesori Topi & Tas Mandiri Global",
   },
 ];
 
@@ -107,7 +107,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-losari-s",
         productId: "prod-kemeja-losari",
-        sku: "CC-KMJ-LSR-NVY-S",
+        sku: "MG-KMJ-LSR-NVY-S",
         size: "S",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -120,7 +120,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-losari-m",
         productId: "prod-kemeja-losari",
-        sku: "CC-KMJ-LSR-NVY-M",
+        sku: "MG-KMJ-LSR-NVY-M",
         size: "M",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -133,7 +133,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-losari-l",
         productId: "prod-kemeja-losari",
-        sku: "CC-KMJ-LSR-NVY-L",
+        sku: "MG-KMJ-LSR-NVY-L",
         size: "L",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -146,7 +146,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-losari-xl",
         productId: "prod-kemeja-losari",
-        sku: "CC-KMJ-LSR-NVY-XL",
+        sku: "MG-KMJ-LSR-NVY-XL",
         size: "XL",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -194,7 +194,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-paotere-s",
         productId: "prod-kaos-paotere",
-        sku: "CC-KAS-PTR-TRC-S",
+        sku: "MG-KAS-PTR-TRC-S",
         size: "S",
         color: "Terracotta",
         colorHex: "#B8523C",
@@ -207,7 +207,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-paotere-m",
         productId: "prod-kaos-paotere",
-        sku: "CC-KAS-PTR-TRC-M",
+        sku: "MG-KAS-PTR-TRC-M",
         size: "M",
         color: "Terracotta",
         colorHex: "#B8523C",
@@ -220,7 +220,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-paotere-l",
         productId: "prod-kaos-paotere",
-        sku: "CC-KAS-PTR-TRC-L",
+        sku: "MG-KAS-PTR-TRC-L",
         size: "L",
         color: "Terracotta",
         colorHex: "#B8523C",
@@ -268,7 +268,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-somba-m",
         productId: "prod-celana-somba",
-        sku: "CC-CLN-SMB-NVY-M",
+        sku: "MG-CLN-SMB-NVY-M",
         size: "M",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -281,7 +281,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-somba-l",
         productId: "prod-celana-somba",
-        sku: "CC-CLN-SMB-NVY-L",
+        sku: "MG-CLN-SMB-NVY-L",
         size: "L",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -294,7 +294,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-somba-xl",
         productId: "prod-celana-somba",
-        sku: "CC-CLN-SMB-NVY-XL",
+        sku: "MG-CLN-SMB-NVY-XL",
         size: "XL",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -311,7 +311,7 @@ const SEED_PRODUCTS: Product[] = [
     name: "Topi Kanvas Enam Panel",
     slug: "topi-kanvas-enam-panel",
     description:
-      "Topi enam panel tanpa struktur kaku di bagian mahkota, dilengkapi pengait logam di belakang dan bordir monogram kotak Care Care.",
+      "Topi enam panel tanpa struktur kaku di bagian mahkota, dilengkapi pengait logam di belakang dan bordir monogram kotak Mandiri Global.",
     materialNote: "Kanvas katun 12 oz, lingkar kepala 55 sampai 61 cm.",
     categoryId: "cat-aksesori",
     categorySlug: "aksesori",
@@ -334,7 +334,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-topi-os",
         productId: "prod-topi-benteng",
-        sku: "CC-AKS-TPI-WHT-OS",
+        sku: "MG-AKS-TPI-WHT-OS",
         size: "OS",
         color: "Putih Kapur",
         colorHex: "#FFFFFF",
@@ -382,7 +382,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-kerja-m",
         productId: "prod-kemeja-tenun-saku",
-        sku: "CC-KMJ-KRJ-BRK-M",
+        sku: "MG-KMJ-KRJ-BRK-M",
         size: "M",
         color: "Bata Gelap",
         colorHex: "#9A3F2B",
@@ -395,7 +395,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-kerja-l",
         productId: "prod-kemeja-tenun-saku",
-        sku: "CC-KMJ-KRJ-BRK-L",
+        sku: "MG-KMJ-KRJ-BRK-L",
         size: "L",
         color: "Bata Gelap",
         colorHex: "#9A3F2B",
@@ -435,7 +435,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-tas-os",
         productId: "prod-tas-selempang-lipat",
-        sku: "CC-AKS-TAS-NVY-OS",
+        sku: "MG-AKS-TAS-NVY-OS",
         size: "OS",
         color: "Navy Tinta",
         colorHex: "#2D2D56",
@@ -483,7 +483,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-pelabuhan-s",
         productId: "prod-kaos-garis-pelabuhan",
-        sku: "CC-KAS-PLB-WHT-S",
+        sku: "MG-KAS-PLB-WHT-S",
         size: "S",
         color: "Putih Kapur",
         colorHex: "#FFFFFF",
@@ -496,7 +496,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-pelabuhan-m",
         productId: "prod-kaos-garis-pelabuhan",
-        sku: "CC-KAS-PLB-WHT-M",
+        sku: "MG-KAS-PLB-WHT-M",
         size: "M",
         color: "Putih Kapur",
         colorHex: "#FFFFFF",
@@ -509,7 +509,7 @@ const SEED_PRODUCTS: Product[] = [
       {
         id: "var-pelabuhan-l",
         productId: "prod-kaos-garis-pelabuhan",
-        sku: "CC-KAS-PLB-WHT-L",
+        sku: "MG-KAS-PLB-WHT-L",
         size: "L",
         color: "Putih Kapur",
         colorHex: "#FFFFFF",
@@ -526,7 +526,7 @@ const SEED_PRODUCTS: Product[] = [
 const SEED_ORDERS: OrderRecord[] = [
   {
     id: "ord-1",
-    orderNumber: "CC-261030-K8M2",
+    orderNumber: "MG-261030-K8M2",
     customerName: "Andi Tenri",
     customerEmail: "tenri@contoh.id",
     customerPhone: "081241239876",
@@ -554,7 +554,7 @@ const SEED_ORDERS: OrderRecord[] = [
         variantId: "var-losari-m",
         productNameSnapshot: "Kemeja Boxy Katun Pesisir",
         variantLabelSnapshot: "Navy Tinta, Ukuran M",
-        skuSnapshot: "CC-KMJ-LSR-NVY-M",
+        skuSnapshot: "MG-KMJ-LSR-NVY-M",
         unitPrice: 225000,
         quantity: 1,
         lineTotal: 225000,
@@ -567,7 +567,7 @@ const SEED_ORDERS: OrderRecord[] = [
         variantId: "var-paotere-m",
         productNameSnapshot: "Kaos Heavyweight Paotere",
         variantLabelSnapshot: "Terracotta, Ukuran M",
-        skuSnapshot: "CC-KAS-PTR-TRC-M",
+        skuSnapshot: "MG-KAS-PTR-TRC-M",
         unitPrice: 160000,
         quantity: 1,
         lineTotal: 160000,
@@ -605,7 +605,7 @@ const SEED_ORDERS: OrderRecord[] = [
   },
   {
     id: "ord-2",
-    orderNumber: "CC-261030-P4R9",
+    orderNumber: "MG-261030-P4R9",
     customerName: "Rizky Pratama",
     customerEmail: "rizky@contoh.id",
     customerPhone: "081355002211",
@@ -633,7 +633,7 @@ const SEED_ORDERS: OrderRecord[] = [
         variantId: "var-somba-l",
         productNameSnapshot: "Celana Chino Lebar Somba",
         variantLabelSnapshot: "Navy Tinta, Ukuran L",
-        skuSnapshot: "CC-CLN-SMB-NVY-L",
+        skuSnapshot: "MG-CLN-SMB-NVY-L",
         unitPrice: 285000,
         quantity: 1,
         lineTotal: 285000,
@@ -653,7 +653,7 @@ const SEED_ORDERS: OrderRecord[] = [
   },
   {
     id: "ord-3",
-    orderNumber: "CC-261030-W9T1",
+    orderNumber: "MG-261030-W9T1",
     customerName: "Nadira Putri",
     customerEmail: "nadira@contoh.id",
     customerPhone: "082199887766",
@@ -681,7 +681,7 @@ const SEED_ORDERS: OrderRecord[] = [
         variantId: "var-kerja-l",
         productNameSnapshot: "Kemeja Kerja Kerah Terbuka",
         variantLabelSnapshot: "Bata Gelap, Ukuran L",
-        skuSnapshot: "CC-KMJ-KRJ-BRK-L",
+        skuSnapshot: "MG-KMJ-KRJ-BRK-L",
         unitPrice: 245000,
         quantity: 1,
         lineTotal: 245000,
@@ -721,7 +721,7 @@ const SEED_FAQ: FaqEntry[] = [
     category: "Pengiriman",
     question: "Dari mana pesanan dikirim dan berapa lama sampainya?",
     answer:
-      "Seluruh pesanan dikirim dari gudang Care Care di Makassar, Sulawesi Selatan. Tarif dan estimasi hari pengiriman dihitung langsung dari lokasi kode pos tujuanmu saat checkout.",
+      "Seluruh pesanan dikirim dari gudang Mandiri Global di Makassar, Sulawesi Selatan. Tarif dan estimasi hari pengiriman dihitung langsung dari lokasi kode pos tujuanmu saat checkout.",
   },
   {
     id: "faq-4",

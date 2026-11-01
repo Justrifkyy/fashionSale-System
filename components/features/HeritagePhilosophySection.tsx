@@ -37,10 +37,10 @@ const PALETTE_ARCHIVE: SwatchMeaning[] = [
 
 const PHILOSOPHY_TABS = [
   {
-    key: "carecare",
-    title: "1. KATA 'CARE CARE'",
-    subtitle: "Pakaian dalam Bahasa Makassar",
-    body: "Dalam percakapan sehari-hari orang Makassar, 'care-care' adalah sebutan untuk baju, kain, dan busana yang kita kenakan ke mana pun kaki melangkah. Nama ini kami pilih sebagai janji: kami tidak sekadar menjual komoditas, melainkan merayakan pakaian sebagai cermin karakter orang pesisir yang tangguh, hangat, dan jujur.",
+    key: "mandiriglobal",
+    title: "1. NAMA 'MANDIRI GLOBAL'",
+    subtitle: "Kemandirian Lokal Berstandar Global",
+    body: "Nama Mandiri Global (MG) kami pilih sebagai manifestasi janji: kami merayakan pakaian harian berkarakter tangguh, mandiri, dan berdaya saing global yang berakar dari etos pesisir Makassar. Busana berkualitas tinggi yang menemani setiap langkah dan pencapaian hidup pemakainya.",
   },
   {
     key: "kotak",
@@ -57,7 +57,7 @@ const PHILOSOPHY_TABS = [
 ];
 
 export function HeritagePhilosophySection() {
-  const [activeTabKey, setActiveTabKey] = useState<string>("carecare");
+  const [activeTabKey, setActiveTabKey] = useState<string>("mandiriglobal");
   const [selectedColor, setSelectedColor] = useState<number>(0);
 
   const activeTab = PHILOSOPHY_TABS.find((t) => t.key === activeTabKey) || PHILOSOPHY_TABS[0];
@@ -75,10 +75,10 @@ export function HeritagePhilosophySection() {
               WARISAN & FILOSOFI IDENTITAS
             </span>
           </div>
-          <h2 className="type-h2 text-ink">TENTANG NAMA CARE CARE</h2>
+          <h2 className="type-h2 text-ink">TENTANG IDENTITAS MANDIRI GLOBAL</h2>
           <p className="type-small text-muted max-w-[65ch]">
-            Memahami asal-usul linguistik Makassar, konstruksi logo geometris balok,
-            dan tiga pigmen warna utama yang membentuk pakaian Care Care.
+            Memahami visi kemandirian lokal berdaya saing global, konstruksi logo geometris balok,
+            dan tiga pigmen warna utama yang membentuk pakaian Mandiri Global.
           </p>
         </div>
 
@@ -208,7 +208,7 @@ export function HeritagePhilosophySection() {
             <div className="relative aspect-[4/3] overflow-hidden border-strong border-ink bg-photo shadow-hard">
               <Image
                 src={DEMO_IMAGES.flatlayDenim}
-                alt="Flatlay Pakaian dan Kain Tenun Makassar Care Care"
+                alt="Flatlay Pakaian dan Kain Tenun Makassar Mandiri Global"
                 fill
                 sizes="(max-width: 1024px) 100vw, 500px"
                 className="object-cover"
@@ -248,14 +248,14 @@ export function HeritagePhilosophySection() {
                   fontFamily="monospace"
                 >
                   <textPath href="#heritage-seal-path" startOffset="0%">
-                    ★ CARE CARE MAKASSAR ★ KOTAK & LIPATAN ★ 2026
+                    ★ MANDIRI GLOBAL MAKASSAR ★ KOTAK & LIPATAN ★ 2026
                   </textPath>
                 </text>
               </svg>
               
               {/* Center Stamp Emblem */}
               <div className="absolute inset-0 m-auto h-10 w-10 bg-gold border-2 border-ink flex items-center justify-center shadow-hard-sm">
-                <span className="font-display font-black text-sm text-ink">CC</span>
+                <span className="font-display font-black text-sm text-ink">MG</span>
               </div>
             </div>
           </div>

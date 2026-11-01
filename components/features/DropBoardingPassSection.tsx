@@ -66,7 +66,7 @@ export function DropBoardingPassSection() {
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line-soft pb-4 font-mono text-xs">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 bg-brick border border-ink" />
-              <span className="font-black text-ink">CARE CARE BOARDING PASS // DROP 02</span>
+              <span className="font-black text-ink">MANDIRI GLOBAL BOARDING PASS // DROP 02</span>
             </div>
             <span className="text-muted">PAOTERE ATELIER HUB • GATE 01</span>
           </div>
@@ -198,7 +198,7 @@ export function DropBoardingPassSection() {
               <rect x="96" y="0" width="3" height="24" />
             </svg>
             <span className="font-mono text-[9px] text-muted tracking-widest">
-              CC-MKS-VIP-PASS-2026
+              MG-MKS-VIP-PASS-2026
             </span>
           </div>
 

@@ -21,7 +21,7 @@ interface AccessoryItem {
  * - Dynamic Multi-Layer Neo-Brutalist Shadow: Layered Gold backlight rim + Ink Navy hard shadow + Terracotta brick accent shadow.
  * - Interactive Mouse-Shifted Shadow: Shadows react dynamically to pointer coordinates.
  * - Scroll-Driven Zoom Effect: As user scrolls down, the half-body model zooms in from 1.10x to 1.38x.
- * - Wall-to-Wall Gradient Typography: Massive "CARE CARE" red-to-blue gradient shining directly behind the model.
+ * - Wall-to-Wall Gradient Typography: Massive "MANDIRI GLOBAL" red-to-blue gradient shining directly behind the model.
  * - Pinned Streetwear Artifacts: Industrial inspection ticket with barcode + floating corner badge.
  * - Studio Shutter Flash & Viewfinder Animation: Snappy camera shutter flash overlay, reticle brackets, and model pop on look change.
  * - Outfit-Specific Dynamic Fashion Accessories: 18 distinct Atelier Lookbook items reacting to active outfit.
@@ -35,7 +35,7 @@ export function HeroShowcase() {
   const [flashKey, setFlashKey] = useState(0);
 
   // Dynamic Background Title with Auto-Fit Width logic
-  const [bgTitle] = useState("CARE CARE");
+  const [bgTitle] = useState("MANDIRI GLOBAL");
   const [titleFontSize, setTitleFontSize] = useState<number>(170);
 
   // Transparent half-body cutout models (Standardized 1200x1600 Native HD resolution)
@@ -44,7 +44,7 @@ export function HeroShowcase() {
       url: "/images/models/hero-look-casual.png",
       name: "Setelan Boxy Dayli Skena",
       edition: "DROP 01 - DAYLI STREETWEAR",
-      code: "CC-MKS-01-DLY",
+      code: "MG-MKS-01-DLY",
       fabric: "235 GSM HEAVYWEIGHT TEE",
       badge: "100% COMBED HEAVY",
       label: "DAYLI",
@@ -53,7 +53,7 @@ export function HeroShowcase() {
       url: "/images/models/hero-look-03-gold.png",
       name: "Setelan Gold Street Casual",
       edition: "DROP 01 - PESISIR CASUAL",
-      code: "CC-MKS-02-CSL",
+      code: "MG-MKS-02-CSL",
       fabric: "190 GSM COMBED TENUN",
       badge: "100% KATUN TENUN",
       label: "CASUAL",
@@ -62,7 +62,7 @@ export function HeroShowcase() {
       url: "/images/models/hero-look-profesional.png",
       name: "Setelan Oxford Navy Formal",
       edition: "DROP 01 - FORMAL / KERJA",
-      code: "CC-MKS-03-FRM",
+      code: "MG-MKS-03-FRM",
       fabric: "210 GSM OXFORD POPLIN",
       badge: "100% OXFORD SUITING",
       label: "FORMAL",
@@ -273,7 +273,7 @@ export function HeroShowcase() {
         </div>
       </div>
 
-      {/* 1. LAYER 0: GIANT AUTO-FIT "CARE CARE" DISPLAY WATERMARK */}
+      {/* 1. LAYER 0: GIANT AUTO-FIT "MANDIRI GLOBAL" DISPLAY WATERMARK */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden"
@@ -500,7 +500,7 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
     {
       id: "dayli-cap",
       name: "TOPI 5-PANEL",
-      badge: "CC-01",
+      badge: "MG-01",
       positionClass: "",
       rotation: "-8deg",
       renderSvg: () => (
@@ -520,7 +520,7 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
             strokeWidth="3.5"
           />
           <rect x="47" y="30" width="18" height="12" fill="#FFFFFF" stroke="#2D2D56" strokeWidth="2" />
-          <text x="56" y="39" textAnchor="middle" fontSize="8" fontWeight="900" fill="#2D2D56" fontFamily="sans-serif">CC</text>
+          <text x="56" y="39" textAnchor="middle" fontSize="8" fontWeight="900" fill="#2D2D56" fontFamily="sans-serif">MG</text>
           <circle cx="35" cy="28" r="2" fill="#2D2D56" />
         </svg>
       ),
@@ -540,7 +540,7 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
             strokeWidth="2.5"
           />
           <text x="50" y="27" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#F0B429" fontFamily="monospace">
-            CARE CARE
+            MANDIRI GLOBAL
           </text>
           {[14, 19, 24, 29, 34, 39, 44, 49, 54, 59, 64, 69, 74, 79, 84, 88].map((x, i) => (
             <line
@@ -573,7 +573,7 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
           />
           <circle cx="15" cy="35" r="5" fill="#F0B429" stroke="#2D2D56" strokeWidth="2" />
           <rect x="60" y="12" width="12" height="16" rx="2" fill="#B8523C" stroke="#2D2D56" strokeWidth="2" />
-          <text x="66" y="23" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#FFFFFF">CC</text>
+          <text x="66" y="23" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#FFFFFF">MG</text>
         </svg>
       ),
     },
@@ -670,7 +670,7 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
           {/* Folded cuff */}
           <rect x="18" y="52" width="64" height="18" rx="2" fill="#B8523C" stroke="#2D2D56" strokeWidth="3" />
           <rect x="42" y="56" width="16" height="10" fill="#FFFFFF" stroke="#2D2D56" strokeWidth="1.5" />
-          <text x="50" y="64" textAnchor="middle" fontSize="7" fontWeight="bold" fill="#2D2D56">CC</text>
+          <text x="50" y="64" textAnchor="middle" fontSize="7" fontWeight="bold" fill="#2D2D56">MG</text>
         </svg>
       ),
     },
@@ -711,14 +711,14 @@ const ACCESSORIES_DATA: Record<OutfitKey, AccessoryItem[]> = {
           {/* Base */}
           <ellipse cx="45" cy="46" rx="28" ry="14" fill="#B8523C" stroke="#2D2D56" strokeWidth="3" />
           <ellipse cx="45" cy="46" rx="20" ry="8" fill="#F0B429" stroke="#2D2D56" strokeWidth="1.5" />
-          <text x="45" y="49" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#2D2D56">CARE</text>
+          <text x="45" y="49" textAnchor="middle" fontSize="6" fontWeight="bold" fill="#2D2D56">MG</text>
         </svg>
       ),
     },
     {
       id: "casual-pouch",
       name: "SLING POUCH",
-      badge: "CC-BOX",
+      badge: "MG-BOX",
       positionClass: "",
       rotation: "-12deg",
       renderSvg: () => (

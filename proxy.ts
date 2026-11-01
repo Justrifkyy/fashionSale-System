@@ -8,7 +8,7 @@ import type { NextRequest } from "next/server";
  */
 export function proxy(request: NextRequest) {
   const response = NextResponse.next();
-  response.headers.set("x-carecare-pathname", request.nextUrl.pathname);
+  response.headers.set("x-mg-pathname", request.nextUrl.pathname);
   return response;
 }
 
